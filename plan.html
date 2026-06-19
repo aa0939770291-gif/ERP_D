@@ -1,0 +1,1188 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>亞鈺汽車集團 2026–2027 年度營運規劃書</title>
+<style>
+/* ===== TOKENS ===== */
+:root {
+  --black:    #050508;
+  --black2:   #0d0d12;
+  --gold:     #c9973a;
+  --gold-lt:  #e8c06a;
+  --gold-dk:  #8a6420;
+  --white:    #f0ede6;
+  --dim:      #7a7568;
+  --slide-w:  1280px;
+  --slide-h:  720px;
+}
+
+/* ===== RESET ===== */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; background: #000; overflow: hidden; font-family: 'Noto Serif TC', 'Noto Sans TC', 'PingFang TC', serif; }
+
+/* ===== STAGE ===== */
+#stage {
+  position: fixed; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+}
+#viewport {
+  position: relative;
+  width: var(--slide-w); height: var(--slide-h);
+  overflow: hidden;
+  transform-origin: top left;
+}
+
+/* ===== SLIDE BASE ===== */
+.slide {
+  position: absolute; inset: 0;
+  width: var(--slide-w); height: var(--slide-h);
+  background: var(--black);
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease;
+}
+.slide.active { opacity: 1; pointer-events: all; }
+
+/* gold border top */
+.slide::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), var(--gold-lt), var(--gold), transparent);
+}
+
+/* ===== CANVAS (磁場流光) ===== */
+canvas.bg {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 0;
+  opacity: 0.55;
+}
+
+/* ===== LAYOUT HELPERS ===== */
+.z1  { position: relative; z-index: 1; }
+.row { display: flex; gap: 28px; }
+.col { flex: 1; }
+
+/* ===== DECORATIVE LOGO ===== */
+.y2-logo {
+  width: 80px; height: 80px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 900; letter-spacing: -1px;
+  color: var(--gold); background: rgba(201,151,58,0.08);
+  flex-shrink: 0;
+}
+.y2-logo.lg { width: 112px; height: 112px; font-size: 40px; border-width: 3px; }
+
+/* ===== TYPOGRAPHY ===== */
+.tag  { font-size: 11px; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; margin-bottom: 12px; }
+.h1   { font-size: 56px; font-weight: 900; color: var(--white); line-height: 1.1; }
+.h2   { font-size: 38px; font-weight: 800; color: var(--white); line-height: 1.15; }
+.h3   { font-size: 22px; font-weight: 700; color: var(--gold-lt); margin-bottom: 10px; }
+.h4   { font-size: 16px; font-weight: 600; color: var(--gold); margin-bottom: 8px; letter-spacing: 1px; }
+.body { font-size: 15px; color: var(--white); opacity: .82; line-height: 1.75; }
+.sm   { font-size: 13px; color: var(--dim); line-height: 1.65; }
+.gold { color: var(--gold); }
+.gold-lt { color: var(--gold-lt); }
+.num  { font-size: 42px; font-weight: 900; color: var(--gold-lt); line-height: 1; }
+.num-unit { font-size: 16px; color: var(--dim); margin-top: 4px; }
+
+/* ===== GOLD LINE ===== */
+.gold-line {
+  height: 1px;
+  background: linear-gradient(90deg, var(--gold), transparent);
+  margin: 18px 0;
+}
+
+/* ===== CARD ===== */
+.card {
+  background: rgba(201,151,58,0.06);
+  border: 1px solid rgba(201,151,58,0.22);
+  border-radius: 8px;
+  padding: 22px 24px;
+  position: relative;
+}
+.card::before {
+  content: '';
+  position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: linear-gradient(180deg, var(--gold), var(--gold-dk));
+  border-radius: 8px 0 0 8px;
+}
+
+/* ===== KPI BOX ===== */
+.kpi-grid { display: grid; gap: 18px; }
+.kpi-grid.cols2 { grid-template-columns: 1fr 1fr; }
+.kpi-grid.cols3 { grid-template-columns: 1fr 1fr 1fr; }
+.kpi-grid.cols4 { grid-template-columns: 1fr 1fr 1fr 1fr; }
+.kpi { text-align: center; padding: 18px 12px; }
+
+/* ===== TABLE ===== */
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th { background: rgba(201,151,58,0.15); color: var(--gold-lt); padding: 9px 14px; text-align: left; border-bottom: 1px solid rgba(201,151,58,0.3); }
+td { padding: 8px 14px; color: var(--white); opacity: .85; border-bottom: 1px solid rgba(255,255,255,0.05); }
+tr:hover td { background: rgba(201,151,58,0.04); }
+
+/* ===== PROGRESS BAR ===== */
+.bar-wrap { background: rgba(255,255,255,0.07); border-radius: 4px; height: 6px; margin-top: 6px; }
+.bar-fill  { height: 6px; border-radius: 4px; background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt)); transition: width .8s ease; }
+
+/* ===== BULLET LIST ===== */
+ul.gold-list { list-style: none; }
+ul.gold-list li { padding: 7px 0 7px 24px; position: relative; color: var(--white); opacity: .85; font-size: 14.5px; line-height: 1.6; border-bottom: 1px solid rgba(255,255,255,0.05); }
+ul.gold-list li::before { content: '▸'; color: var(--gold); position: absolute; left: 0; }
+
+/* ===== NUMBERED BADGE ===== */
+.badge { width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: var(--gold); flex-shrink: 0; }
+
+/* ===== COVER SPECIFICS ===== */
+.cover-inner { padding: 0 80px; display: flex; flex-direction: column; justify-content: center; height: 100%; gap: 24px; }
+.cover-sub { color: var(--dim); font-size: 14px; letter-spacing: 2px; }
+
+/* ===== SECTION COVER ===== */
+.sec-cover { align-items: center; justify-content: center; text-align: center; gap: 20px; }
+.sec-num { font-size: 120px; font-weight: 900; color: rgba(201,151,58,0.1); line-height: 1; position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+
+/* ===== SLIDE PADDING ===== */
+.pad { padding: 52px 68px 40px; }
+.pad-sm { padding: 44px 68px 36px; }
+
+/* ===== SLIDE HEADER ===== */
+.slide-hdr { display: flex; align-items: center; gap: 18px; margin-bottom: 28px; }
+.slide-hdr-line { flex: 1; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); }
+
+/* ===== BOTTOM BAR ===== */
+#bottom-bar {
+  position: fixed; bottom: 0; left: 0; right: 0;
+  height: 36px; background: rgba(0,0,0,0.85);
+  display: flex; align-items: center; gap: 0;
+  z-index: 100;
+}
+#progress-track {
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: rgba(201,151,58,0.15);
+}
+#progress-fill {
+  height: 2px; background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt));
+  transition: width .4s ease;
+}
+#slide-counter {
+  padding: 0 20px; font-size: 11px; letter-spacing: 2px;
+  color: var(--dim);
+}
+#nav-hint { flex: 1; text-align: right; padding-right: 20px; font-size: 11px; color: var(--dim); letter-spacing: 1px; }
+.nav-btn {
+  width: 36px; height: 36px; border: none; cursor: pointer;
+  background: rgba(201,151,58,0.08); color: var(--gold);
+  font-size: 16px; transition: background .2s;
+  flex-shrink: 0;
+}
+.nav-btn:hover { background: rgba(201,151,58,0.22); }
+
+/* ===== CLICK ZONES ===== */
+#prev-zone, #next-zone {
+  position: fixed; top: 0; bottom: 36px; width: 80px;
+  z-index: 50; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  opacity: 0; transition: opacity .25s;
+}
+#prev-zone { left: 0; }
+#next-zone { right: 0; }
+#prev-zone:hover, #next-zone:hover { opacity: 1; background: linear-gradient(90deg, rgba(0,0,0,0.35), transparent); }
+#next-zone:hover { background: linear-gradient(270deg, rgba(0,0,0,0.35), transparent); }
+.arrow-icon { font-size: 28px; color: rgba(201,151,58,0.7); }
+
+/* ===== PRINT ===== */
+@media print {
+  html, body { overflow: visible; background: #000; }
+  #stage      { position: static; display: block; }
+  #viewport   { transform: none !important; width: 297mm; height: 167mm; overflow: visible; }
+  #bottom-bar, #prev-zone, #next-zone { display: none !important; }
+  .slide      { position: relative; opacity: 1 !important; pointer-events: all;
+                width: 297mm; height: 167mm; page-break-after: always; break-after: page; }
+  canvas.bg   { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="stage">
+  <div id="viewport">
+
+    <!-- ==================== SLIDE 1: COVER ==================== -->
+    <div class="slide active" id="s1">
+      <canvas class="bg" id="c1"></canvas>
+      <div class="cover-inner z1">
+        <div style="display:flex;align-items:center;gap:20px;">
+          <div class="y2-logo lg">Y2</div>
+          <div>
+            <div class="tag">Y2 AUTOMOBILE GROUP</div>
+            <div class="h1">亞鈺汽車集團</div>
+          </div>
+        </div>
+        <div class="gold-line" style="width:480px;"></div>
+        <div class="h2" style="color:var(--gold-lt);font-weight:300;letter-spacing:4px;">2026 — 2027 年度營運規劃書</div>
+        <div style="display:flex;gap:40px;margin-top:8px;">
+          <div class="cover-sub">批發零售 ／ 品牌商 ／ 二手車商</div>
+          <div class="cover-sub">|</div>
+          <div class="cover-sub">機密文件 · 2026.06</div>
+        </div>
+        <div style="margin-top:32px;display:flex;gap:36px;">
+          <div class="card" style="padding:16px 24px;">
+            <div class="sm">地址</div>
+            <div class="body" style="font-size:13px;">桃園市八德區和平路 729 號</div>
+          </div>
+          <div class="card" style="padding:16px 24px;">
+            <div class="sm">電話</div>
+            <div class="body" style="font-size:13px;">03-3750080 ／ 0958-890-915</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 2: TABLE OF CONTENTS ==================== -->
+    <div class="slide" id="s2">
+      <canvas class="bg" id="c2"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="y2-logo" style="width:42px;height:42px;font-size:14px;">Y2</div>
+          <div class="h3" style="margin:0;">目錄</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">CONTENTS</div>
+        </div>
+        <div class="row" style="gap:40px;margin-top:8px;">
+          <div class="col">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">01</div>
+                <div>
+                  <div class="h4" style="margin:0;">執行摘要</div>
+                  <div class="sm">核心成果與戰略方向</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">02</div>
+                <div>
+                  <div class="h4" style="margin:0;">2025 年度績效回顧</div>
+                  <div class="sm">銷售、財務、庫存綜覽</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">03</div>
+                <div>
+                  <div class="h4" style="margin:0;">市場環境分析</div>
+                  <div class="sm">機會、威脅與競爭態勢</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">04</div>
+                <div>
+                  <div class="h4" style="margin:0;">銷售策略規劃</div>
+                  <div class="sm">新車、二手車、零件批發</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">05</div>
+                <div>
+                  <div class="h4" style="margin:0;">財務目標與資金規劃</div>
+                  <div class="sm">預算分配、現金流管理</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div style="display:flex;flex-direction:column;gap:12px;">
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">06</div>
+                <div>
+                  <div class="h4" style="margin:0;">庫存與供應鏈優化</div>
+                  <div class="sm">庫存天數改善、採購策略</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">07</div>
+                <div>
+                  <div class="h4" style="margin:0;">數位化轉型計畫</div>
+                  <div class="sm">ERP升級、AI洞見應用</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">08</div>
+                <div>
+                  <div class="h4" style="margin:0;">人才與組織發展</div>
+                  <div class="sm">招募計畫、培訓路徑</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">09</div>
+                <div>
+                  <div class="h4" style="margin:0;">風險管理</div>
+                  <div class="sm">識別、緩解與應對措施</div>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;gap:16px;" class="card">
+                <div class="badge">10</div>
+                <div>
+                  <div class="h4" style="margin:0;">里程碑與 KPI 追蹤</div>
+                  <div class="sm">季度目標、責任人、時程</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 3: EXEC SUMMARY ==================== -->
+    <div class="slide" id="s3">
+      <canvas class="bg" id="c3"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">01</div>
+          <div class="h3" style="margin:0;">執行摘要</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">EXECUTIVE SUMMARY</div>
+        </div>
+        <div class="row">
+          <div class="col" style="flex:1.3;">
+            <div class="card" style="margin-bottom:18px;">
+              <div class="h4">核心成果 · 2025</div>
+              <div class="body" style="font-size:14px;">年度銷貨金額達 <span class="gold-lt" style="font-weight:700;">NT$ 1.21 億</span>，年增率 <span class="gold-lt">+112%</span>；毛利率穩定於 <span class="gold-lt">45.7%</span>，顯示品牌定價力強健。二手車業務帶動整體業績躍升，客戶規模擴大至 <span class="gold-lt">61 家</span>活躍企業客戶。</div>
+            </div>
+            <div class="card">
+              <div class="h4">2026–2027 戰略方向</div>
+              <ul class="gold-list">
+                <li>銷貨目標：2026 年 NT$1.8億 / 2027 年 NT$2.5億</li>
+                <li>二手車成交量提升 40%，建立標準化驗車流程</li>
+                <li>新增 3 個品牌授權代理，擴大零件批發版圖</li>
+                <li>庫存天數由 106 天壓縮至 75 天以內</li>
+                <li>應付帳款未付比率由 29% 降至 15%</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col">
+            <div class="kpi-grid cols2">
+              <div class="card kpi">
+                <div class="num">1.21<span style="font-size:20px;">億</span></div>
+                <div class="num-unit">2025 銷貨總額</div>
+              </div>
+              <div class="card kpi">
+                <div class="num" style="color:#4caf8a;">45.7%</div>
+                <div class="num-unit">毛利率</div>
+              </div>
+              <div class="card kpi">
+                <div class="num">+112%</div>
+                <div class="num-unit">銷貨年增率</div>
+              </div>
+              <div class="card kpi">
+                <div class="num">61</div>
+                <div class="num-unit">活躍客戶數</div>
+              </div>
+              <div class="card kpi">
+                <div class="num" style="color:#e88a4c;">106<span style="font-size:20px;">天</span></div>
+                <div class="num-unit">庫存天數 ⚠</div>
+              </div>
+              <div class="card kpi">
+                <div class="num" style="color:#e88a4c;">29%</div>
+                <div class="num-unit">AP 未付比率 ⚠</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 4: 2025 PERFORMANCE ==================== -->
+    <div class="slide" id="s4">
+      <canvas class="bg" id="c4"></canvas>
+      <div class="pad-sm z1">
+        <div class="slide-hdr">
+          <div class="badge">02</div>
+          <div class="h3" style="margin:0;">2025 年度績效回顧</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">PERFORMANCE REVIEW</div>
+        </div>
+        <div class="row" style="gap:22px;">
+          <div class="col">
+            <div class="h4">銷售績效</div>
+            <div class="card" style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="sm">2025 銷貨</span><span class="gold-lt" style="font-size:14px;font-weight:700;">NT$1.21億</span></div>
+              <div class="bar-wrap"><div class="bar-fill" style="width:82%;"></div></div>
+            </div>
+            <div class="card" style="margin-bottom:12px;">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="sm">2024 銷貨</span><span class="gold-lt" style="font-size:14px;">NT$5,715萬</span></div>
+              <div class="bar-wrap"><div class="bar-fill" style="width:38%;background:linear-gradient(90deg,#4a3a18,#8a6420);"></div></div>
+            </div>
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span class="sm">2023 銷貨</span><span class="gold-lt" style="font-size:14px;">NT$3,201萬</span></div>
+              <div class="bar-wrap"><div class="bar-fill" style="width:21%;background:linear-gradient(90deg,#2a200a,#5a4010);"></div></div>
+            </div>
+            <div class="tag" style="margin-top:14px;">3 年 CAGR +94%</div>
+          </div>
+          <div class="col">
+            <div class="h4">財務健康</div>
+            <table>
+              <thead><tr><th>指標</th><th>2025 值</th><th>評估</th></tr></thead>
+              <tbody>
+                <tr><td>毛利率</td><td class="gold-lt">45.7%</td><td style="color:#4caf8a;">優良</td></tr>
+                <tr><td>採購總額</td><td>NT$6,553萬</td><td style="color:var(--dim);">合理</td></tr>
+                <tr><td>AP 未付比</td><td>29%</td><td style="color:#e88a4c;">需關注</td></tr>
+                <tr><td>庫存金額</td><td>NT$3,471萬</td><td style="color:#e88a4c;">偏高</td></tr>
+                <tr><td>庫存天數</td><td>106 天</td><td style="color:#e88a4c;">過長</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <div class="h4">客戶與供應商</div>
+            <div class="card" style="margin-bottom:10px;">
+              <div class="sm" style="margin-bottom:6px;">前三大客戶集中度</div>
+              <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--white);">
+                <span>TOP 3 佔比</span><span class="gold-lt">~68%</span>
+              </div>
+              <div class="bar-wrap" style="margin-top:6px;"><div class="bar-fill" style="width:68%;background:linear-gradient(90deg,#8a2020,#e84c4c);"></div></div>
+              <div class="sm" style="margin-top:8px;">⚠ 客戶集中度偏高，需分散風險</div>
+            </div>
+            <div class="card">
+              <div class="sm" style="margin-bottom:6px;">活躍供應商數</div>
+              <div style="font-size:28px;font-weight:700;color:var(--gold-lt);">37 <span style="font-size:14px;color:var(--dim);">家</span></div>
+              <div class="sm" style="margin-top:4px;">主要採購集中前 5 家供應商</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 5: MARKET ANALYSIS ==================== -->
+    <div class="slide" id="s5">
+      <canvas class="bg" id="c5"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">03</div>
+          <div class="h3" style="margin:0;">市場環境分析</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">MARKET ANALYSIS</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="h4" style="color:#4caf8a;">▲ 機會</div>
+            <ul class="gold-list">
+              <li>電動車換購潮推升二手燃油車需求</li>
+              <li>企業車隊更新計畫持續釋放商機</li>
+              <li>品牌代理資格門檻提升，利好現有持牌業者</li>
+              <li>政府推動中小企業數位化，採購補助可活用</li>
+              <li>跨境電商汽車零件需求快速成長</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="h4" style="color:#e88a4c;">▼ 威脅</div>
+            <ul class="gold-list">
+              <li>原物料與物流成本持續通膨壓力</li>
+              <li>純網路二手車平台蠶食傳統市場份額</li>
+              <li>新車降價促銷壓縮二手車折舊空間</li>
+              <li>人才短缺，技術型汽車人才薪資攀升</li>
+              <li>台幣升值影響進口零件毛利</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="h4">核心競爭優勢</div>
+            <div class="card" style="margin-bottom:10px;">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">品牌授權資格</div>
+              <div class="sm" style="margin-top:4px;">持有多品牌代理資格，客戶信任度高</div>
+            </div>
+            <div class="card" style="margin-bottom:10px;">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">三業合一模式</div>
+              <div class="sm" style="margin-top:4px;">新車＋二手車＋零件，交叉銷售效益高</div>
+            </div>
+            <div class="card">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">穩定企業客戶群</div>
+              <div class="sm" style="margin-top:4px;">61 家 B2B 客戶，複購率高、金額大</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 6: SALES STRATEGY ==================== -->
+    <div class="slide" id="s6">
+      <canvas class="bg" id="c6"></canvas>
+      <div class="pad-sm z1">
+        <div class="slide-hdr">
+          <div class="badge">04</div>
+          <div class="h3" style="margin:0;">銷售策略規劃</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">SALES STRATEGY</div>
+        </div>
+        <div class="row" style="gap:22px;">
+          <div class="col">
+            <div class="h4">新車銷售</div>
+            <div class="card" style="margin-bottom:10px;padding:16px 20px;">
+              <div style="font-size:13px;color:var(--white);line-height:1.7;">
+                ‣ 爭取 2–3 個新品牌授權代理<br>
+                ‣ 企業車隊專案報價團隊成立<br>
+                ‣ 新車交車體驗升級（交車儀式、拍照背板）<br>
+                ‣ 季度試乘活動吸引潛在客戶
+              </div>
+            </div>
+            <div class="tag" style="margin-bottom:6px;">2026 目標</div>
+            <div class="num" style="font-size:28px;">NT$ 1.0 億</div>
+          </div>
+          <div class="col">
+            <div class="h4">二手車業務</div>
+            <div class="card" style="margin-bottom:10px;padding:16px 20px;">
+              <div style="font-size:13px;color:var(--white);line-height:1.7;">
+                ‣ 建立 SOP 驗車流程（256 點檢查表）<br>
+                ‣ 線上展間：360° 環景拍攝上架<br>
+                ‣ 車況報告透明化，提升買家信心<br>
+                ‣ 置換方案：舊換新補貼 NT$30,000
+              </div>
+            </div>
+            <div class="tag" style="margin-bottom:6px;">2026 目標（+40%）</div>
+            <div class="num" style="font-size:28px;">NT$ 5,600 萬</div>
+          </div>
+          <div class="col">
+            <div class="h4">零件批發</div>
+            <div class="card" style="margin-bottom:10px;padding:16px 20px;">
+              <div style="font-size:13px;color:var(--white);line-height:1.7;">
+                ‣ 開發維修廠 B2B 批發客戶（目標 +20 家）<br>
+                ‣ 原廠零件 vs 副廠零件分層定價<br>
+                ‣ 快速出貨承諾：24 小時到貨保證<br>
+                ‣ 電商平台（蝦皮/露天）開設店鋪
+              </div>
+            </div>
+            <div class="tag" style="margin-bottom:6px;">2026 目標</div>
+            <div class="num" style="font-size:28px;">NT$ 2,400 萬</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;display:flex;gap:16px;">
+          <div class="card" style="flex:1;padding:14px 20px;display:flex;align-items:center;gap:14px;">
+            <div style="font-size:24px;">🎯</div>
+            <div>
+              <div class="tag" style="margin:0 0 2px;">2026 總銷貨目標</div>
+              <div class="num" style="font-size:24px;">NT$ 1.8 億 <span style="font-size:14px;color:var(--gold);">（年增 +49%）</span></div>
+            </div>
+          </div>
+          <div class="card" style="flex:1;padding:14px 20px;display:flex;align-items:center;gap:14px;">
+            <div style="font-size:24px;">🚀</div>
+            <div>
+              <div class="tag" style="margin:0 0 2px;">2027 總銷貨目標</div>
+              <div class="num" style="font-size:24px;">NT$ 2.5 億 <span style="font-size:14px;color:var(--gold);">（年增 +39%）</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 7: FINANCE ==================== -->
+    <div class="slide" id="s7">
+      <canvas class="bg" id="c7"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">05</div>
+          <div class="h3" style="margin:0;">財務目標與資金規劃</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">FINANCIAL PLAN</div>
+        </div>
+        <div class="row">
+          <div class="col" style="flex:1.2;">
+            <div class="h4">損益預測</div>
+            <table>
+              <thead><tr><th>項目</th><th>2025 實績</th><th>2026 目標</th><th>2027 目標</th></tr></thead>
+              <tbody>
+                <tr><td>銷貨淨額</td><td>NT$1.21億</td><td class="gold-lt">NT$1.8億</td><td class="gold-lt">NT$2.5億</td></tr>
+                <tr><td>毛利率</td><td>45.7%</td><td class="gold-lt">47%</td><td class="gold-lt">48%</td></tr>
+                <tr><td>毛利金額</td><td>NT$5,530萬</td><td class="gold-lt">NT$8,460萬</td><td class="gold-lt">NT$1.2億</td></tr>
+                <tr><td>營業費用率</td><td>~28%</td><td>26%</td><td>24%</td></tr>
+                <tr><td>淨利率目標</td><td>~18%</td><td class="gold-lt">21%</td><td class="gold-lt">24%</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <div class="h4">資金優先配置</div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;color:var(--white);">庫存採購週轉</span>
+                <span class="gold-lt" style="font-size:14px;font-weight:700;">40%</span>
+              </div>
+              <div class="bar-wrap" style="margin-top:6px;"><div class="bar-fill" style="width:40%;"></div></div>
+            </div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;color:var(--white);">業務拓展與行銷</span>
+                <span class="gold-lt" style="font-size:14px;font-weight:700;">25%</span>
+              </div>
+              <div class="bar-wrap" style="margin-top:6px;"><div class="bar-fill" style="width:25%;"></div></div>
+            </div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;color:var(--white);">數位化建設</span>
+                <span class="gold-lt" style="font-size:14px;font-weight:700;">20%</span>
+              </div>
+              <div class="bar-wrap" style="margin-top:6px;"><div class="bar-fill" style="width:20%;"></div></div>
+            </div>
+            <div class="card" style="padding:14px 18px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:13px;color:var(--white);">人才招募培訓</span>
+                <span class="gold-lt" style="font-size:14px;font-weight:700;">15%</span>
+              </div>
+              <div class="bar-wrap" style="margin-top:6px;"><div class="bar-fill" style="width:15%;background:linear-gradient(90deg,#1a3a2a,#2a8a5a);"></div></div>
+            </div>
+          </div>
+        </div>
+        <div class="card" style="margin-top:18px;padding:14px 22px;background:rgba(201,151,58,0.04);">
+          <div class="tag" style="margin:0 0 4px;">現金流管理重點</div>
+          <div style="font-size:13px;color:var(--white);opacity:.85;">
+            將客戶付款週期由平均 45 天縮短至 30 天；應付帳款未付比率由 29% → 15%；建立 NT$500 萬緊急備用金；申請政府中小企業信保貸款擴大週轉。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 8: INVENTORY ==================== -->
+    <div class="slide" id="s8">
+      <canvas class="bg" id="c8"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">06</div>
+          <div class="h3" style="margin:0;">庫存與供應鏈優化</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">INVENTORY & SUPPLY CHAIN</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="h4">現況診斷</div>
+            <div class="kpi-grid cols2" style="margin-bottom:18px;">
+              <div class="card kpi">
+                <div class="num" style="font-size:32px;color:#e88a4c;">106<span style="font-size:16px;">天</span></div>
+                <div class="num-unit">現有庫存天數</div>
+              </div>
+              <div class="card kpi">
+                <div class="num" style="font-size:32px;color:#4caf8a;">75<span style="font-size:16px;">天</span></div>
+                <div class="num-unit">目標庫存天數</div>
+              </div>
+            </div>
+            <div class="card">
+              <div class="h4">庫存結構</div>
+              <div style="font-size:13px;color:var(--white);opacity:.85;line-height:1.9;">
+                ‣ 原物料：NT$1,234萬（36%）<br>
+                ‣ 在製品：NT$892萬（26%）<br>
+                ‣ 製成品/整備車：NT$1,345萬（38%）
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="h4">優化行動計畫</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:12px;align-items:flex-start;">
+                <div class="badge">Q1</div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">導入 ABC 分類法</div>
+                  <div class="sm">A 類高轉速品優先補貨；C 類滯銷品清倉處理</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:flex-start;">
+                <div class="badge">Q2</div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">供應商 JIT 協議</div>
+                  <div class="sm">與前 5 大供應商簽訂準時交貨 SLA，降低安全庫存需求</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:flex-start;">
+                <div class="badge">Q3</div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">ERP 庫存預警模組</div>
+                  <div class="sm">設定安全庫存上下限，自動觸發採購申請</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;align-items:flex-start;">
+                <div class="badge">Q4</div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div style="font-size:13px;color:var(--gold-lt);font-weight:600;">滯銷車輛拍賣機制</div>
+                  <div class="sm">超過 90 天未售車輛啟動競拍，釋放資金</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 9: DIGITAL ==================== -->
+    <div class="slide" id="s9">
+      <canvas class="bg" id="c9"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">07</div>
+          <div class="h3" style="margin:0;">數位化轉型計畫</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">DIGITAL TRANSFORMATION</div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <div class="h4">核心系統升級</div>
+            <ul class="gold-list">
+              <li>ERP 雲端化：從地端移轉至 SaaS 架構，確保隨時存取</li>
+              <li>CRM 導入：記錄客戶購買週期、偏好、服務紀錄</li>
+              <li>行動 APP：業務人員外勤報價、查庫存即時同步</li>
+              <li>電子簽約：合約簽署流程全面數位化</li>
+              <li>BI 儀表板：每日自動產生銷售、庫存、財務報表</li>
+            </ul>
+          </div>
+          <div class="col">
+            <div class="h4">AI 洞見應用</div>
+            <div class="card" style="margin-bottom:12px;padding:16px 20px;">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;margin-bottom:6px;">需求預測 AI</div>
+              <div class="sm">分析歷史銷售季節性，自動預測下季備車數量</div>
+            </div>
+            <div class="card" style="margin-bottom:12px;padding:16px 20px;">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;margin-bottom:6px;">客戶流失預警</div>
+              <div class="sm">偵測高風險客戶（>3個月未下單）自動提醒業務跟進</div>
+            </div>
+            <div class="card" style="padding:16px 20px;">
+              <div style="font-size:13px;color:var(--gold-lt);font-weight:600;margin-bottom:6px;">定價最佳化引擎</div>
+              <div class="sm">二手車依車齡、里程、市況動態建議定價區間</div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="h4">行銷數位化</div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="font-size:13px;color:var(--white);">官網 SEO 優化</div>
+              <div class="sm">目標 Google「桃園汽車」前 3 名</div>
+            </div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="font-size:13px;color:var(--white);">社群媒體經營</div>
+              <div class="sm">FB、IG 每週 3 篇，粉絲目標 5,000</div>
+            </div>
+            <div class="card" style="margin-bottom:10px;padding:14px 18px;">
+              <div style="font-size:13px;color:var(--white);">Google 廣告投放</div>
+              <div class="sm">月預算 NT$5 萬，鎖定企業車隊決策人</div>
+            </div>
+            <div class="card" style="padding:14px 18px;">
+              <div style="font-size:13px;color:var(--white);">LINE 官方帳號</div>
+              <div class="sm">客服機器人自動回覆、促銷推播</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 10: HR ==================== -->
+    <div class="slide" id="s10">
+      <canvas class="bg" id="c10"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">08</div>
+          <div class="h3" style="margin:0;">人才與組織發展</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">PEOPLE & ORGANIZATION</div>
+        </div>
+        <div class="row">
+          <div class="col" style="flex:1.1;">
+            <div class="h4">招募計畫 2026</div>
+            <table>
+              <thead><tr><th>職位</th><th>人數</th><th>時程</th><th>優先</th></tr></thead>
+              <tbody>
+                <tr><td>業務主任</td><td>2</td><td>Q1</td><td style="color:#4caf8a;">高</td></tr>
+                <tr><td>二手車評估師</td><td>1</td><td>Q1</td><td style="color:#4caf8a;">高</td></tr>
+                <tr><td>數位行銷專員</td><td>1</td><td>Q2</td><td style="color:var(--gold);">中</td></tr>
+                <tr><td>倉管/物流人員</td><td>2</td><td>Q2</td><td style="color:var(--gold);">中</td></tr>
+                <tr><td>財務分析師</td><td>1</td><td>Q3</td><td style="color:var(--dim);">一般</td></tr>
+                <tr><td>IT 系統管理員</td><td>1</td><td>Q3</td><td style="color:var(--dim);">一般</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col">
+            <div class="h4">培訓計畫</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div class="card" style="padding:14px 18px;">
+                <div style="display:flex;justify-content:space-between;">
+                  <span style="font-size:13px;color:var(--gold-lt);">品牌產品知識培訓</span>
+                  <span class="sm">每季</span>
+                </div>
+                <div class="sm" style="margin-top:4px;">由各品牌原廠提供課程，全業務參加</div>
+              </div>
+              <div class="card" style="padding:14px 18px;">
+                <div style="display:flex;justify-content:space-between;">
+                  <span style="font-size:13px;color:var(--gold-lt);">銷售技巧工作坊</span>
+                  <span class="sm">半年</span>
+                </div>
+                <div class="sm" style="margin-top:4px;">B2B 大客戶談判、車輛估價實務</div>
+              </div>
+              <div class="card" style="padding:14px 18px;">
+                <div style="display:flex;justify-content:space-between;">
+                  <span style="font-size:13px;color:var(--gold-lt);">數位工具培訓</span>
+                  <span class="sm">上線前</span>
+                </div>
+                <div class="sm" style="margin-top:4px;">ERP、CRM 系統上線前全員訓練</div>
+              </div>
+              <div class="card" style="padding:14px 18px;">
+                <div style="display:flex;justify-content:space-between;">
+                  <span style="font-size:13px;color:var(--gold-lt);">主管領導力課程</span>
+                  <span class="sm">年度</span>
+                </div>
+                <div class="sm" style="margin-top:4px;">外部培訓機構合作，中層主管強化</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 11: RISK ==================== -->
+    <div class="slide" id="s11">
+      <canvas class="bg" id="c11"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="badge">09</div>
+          <div class="h3" style="margin:0;">風險管理</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">RISK MANAGEMENT</div>
+        </div>
+        <table>
+          <thead>
+            <tr><th>風險項目</th><th>影響度</th><th>可能性</th><th>緩解策略</th><th>責任人</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>客戶集中度過高（TOP3 佔 68%）</td>
+              <td style="color:#e84c4c;">高</td><td style="color:#e88a4c;">中</td>
+              <td>積極開發中小型客戶；設定單一客戶佔比上限 30%</td>
+              <td>業務主任</td>
+            </tr>
+            <tr>
+              <td>應付帳款逾期（29% 未付）</td>
+              <td style="color:#e88a4c;">中</td><td style="color:#e84c4c;">高</td>
+              <td>建立付款追蹤自動提醒；與供應商協商延長票期</td>
+              <td>財務主管</td>
+            </tr>
+            <tr>
+              <td>庫存積壓（106 天）</td>
+              <td style="color:#e88a4c;">中</td><td style="color:#e84c4c;">高</td>
+              <td>ABC 分類、滯銷車拍賣機制、JIT 採購協議</td>
+              <td>倉管主任</td>
+            </tr>
+            <tr>
+              <td>關鍵業務人員離職</td>
+              <td style="color:#e84c4c;">高</td><td style="color:#e88a4c;">中</td>
+              <td>留才獎金制度；業務流程文件化降低個人依賴</td>
+              <td>總經理</td>
+            </tr>
+            <tr>
+              <td>供應商短缺 / 漲價</td>
+              <td style="color:#e88a4c;">中</td><td style="color:#e88a4c;">中</td>
+              <td>備用供應商名單；重要零件建立 30 天安全庫存</td>
+              <td>採購主管</td>
+            </tr>
+            <tr>
+              <td>網路平台競爭搶客</td>
+              <td style="color:#e88a4c;">中</td><td style="color:#4caf8a;">低</td>
+              <td>強化服務差異化；建立 O2O 數位展間優勢</td>
+              <td>行銷專員</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="card" style="margin-top:16px;padding:12px 20px;">
+          <div class="tag" style="margin:0 0 4px;">風險應對原則</div>
+          <div style="font-size:13px;color:var(--white);opacity:.85;">每月風控例會檢視 KRI（關鍵風險指標）；重大風險升級至總經理層級決策；每季更新風險登記冊。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 12: KPI ROADMAP ==================== -->
+    <div class="slide" id="s12">
+      <canvas class="bg" id="c12"></canvas>
+      <div class="pad-sm z1">
+        <div class="slide-hdr">
+          <div class="badge">10</div>
+          <div class="h3" style="margin:0;">里程碑與 KPI 追蹤</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">MILESTONES & KPIs</div>
+        </div>
+        <div class="row" style="gap:20px;">
+          <div class="col">
+            <div class="h4">2026 季度里程碑</div>
+            <div style="display:flex;flex-direction:column;gap:10px;">
+              <div style="display:flex;gap:12px;">
+                <div style="width:3px;background:var(--gold);border-radius:3px;flex-shrink:0;"></div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div class="tag" style="margin:0 0 4px;">Q1 · 1–3月</div>
+                  <div style="font-size:13px;color:var(--white);line-height:1.7;">完成 2 名業務主任招募 ／ ABC 庫存盤點 ／ CRM 系統評估選型</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="width:3px;background:var(--gold);border-radius:3px;flex-shrink:0;"></div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div class="tag" style="margin:0 0 4px;">Q2 · 4–6月</div>
+                  <div style="font-size:13px;color:var(--white);line-height:1.7;">CRM 上線 ／ 新品牌代理談判完成 ／ 庫存天數降至 90 天</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="width:3px;background:var(--gold);border-radius:3px;flex-shrink:0;"></div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div class="tag" style="margin:0 0 4px;">Q3 · 7–9月</div>
+                  <div style="font-size:13px;color:var(--white);line-height:1.7;">線上展間上線 ／ 企業車隊客戶新增 10 家 ／ AP 未付比降至 20%</div>
+                </div>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="width:3px;background:var(--gold);border-radius:3px;flex-shrink:0;"></div>
+                <div class="card" style="flex:1;padding:12px 16px;">
+                  <div class="tag" style="margin:0 0 4px;">Q4 · 10–12月</div>
+                  <div style="font-size:13px;color:var(--white);line-height:1.7;">年度銷貨達 NT$1.8億 ／ 庫存天數 75 天 ／ AI 定價工具試行</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="h4">核心 KPI 儀表板</div>
+            <table>
+              <thead><tr><th>KPI</th><th>2025 基準</th><th>2026 目標</th><th>頻率</th></tr></thead>
+              <tbody>
+                <tr><td>銷貨總額</td><td>NT$1.21億</td><td class="gold-lt">NT$1.8億</td><td>月</td></tr>
+                <tr><td>毛利率</td><td>45.7%</td><td class="gold-lt">47%</td><td>月</td></tr>
+                <tr><td>庫存天數</td><td>106天</td><td class="gold-lt">75天</td><td>週</td></tr>
+                <tr><td>AP 未付比</td><td>29%</td><td class="gold-lt">15%</td><td>月</td></tr>
+                <tr><td>活躍客戶數</td><td>61家</td><td class="gold-lt">90家</td><td>季</td></tr>
+                <tr><td>新客戶佔比</td><td>~15%</td><td class="gold-lt">25%</td><td>季</td></tr>
+                <tr><td>員工數</td><td>—</td><td class="gold-lt">+8人</td><td>年</td></tr>
+              </tbody>
+            </table>
+            <div class="card" style="margin-top:12px;padding:12px 18px;">
+              <div style="font-size:13px;color:var(--white);opacity:.85;">每月管理會議 KPI Review；每季董事會報告；每年策略規劃更新</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 13: INVESTMENT SUMMARY ==================== -->
+    <div class="slide" id="s13">
+      <canvas class="bg" id="c13"></canvas>
+      <div class="pad z1">
+        <div class="slide-hdr">
+          <div class="y2-logo" style="width:42px;height:42px;font-size:14px;">Y2</div>
+          <div class="h3" style="margin:0;">預算總覽</div>
+          <div class="slide-hdr-line"></div>
+          <div class="tag" style="margin:0;">BUDGET OVERVIEW</div>
+        </div>
+        <div class="row" style="gap:26px;">
+          <div class="col" style="flex:1.2;">
+            <div class="h4">2026 年度預算分配</div>
+            <table style="margin-bottom:16px;">
+              <thead><tr><th>項目</th><th>預算（萬）</th><th>佔比</th><th>預期效益</th></tr></thead>
+              <tbody>
+                <tr><td>庫存採購週轉</td><td class="gold-lt">2,400</td><td>40%</td><td>庫存天數 -31天</td></tr>
+                <tr><td>業務拓展行銷</td><td class="gold-lt">1,500</td><td>25%</td><td>新客戶 +29家</td></tr>
+                <tr><td>數位化建設</td><td class="gold-lt">1,200</td><td>20%</td><td>效率提升 30%</td></tr>
+                <tr><td>人才招募培訓</td><td class="gold-lt">900</td><td>15%</td><td>新增 8 人</td></tr>
+                <tr><td style="font-weight:700;">合計</td><td class="gold-lt" style="font-weight:700;">6,000</td><td>100%</td><td>銷貨 +49%</td></tr>
+              </tbody>
+            </table>
+            <div class="card" style="padding:14px 20px;">
+              <div class="tag" style="margin:0 0 6px;">資金來源規劃</div>
+              <div style="font-size:13px;color:var(--white);opacity:.85;line-height:1.8;">
+                ‣ 自有資金：NT$3,600萬（60%）<br>
+                ‣ 銀行信保貸款：NT$1,500萬（25%）<br>
+                ‣ 政府補助申請：NT$900萬（15%）
+              </div>
+            </div>
+          </div>
+          <div class="col">
+            <div class="h4">投資回報預測</div>
+            <div style="display:flex;flex-direction:column;gap:14px;">
+              <div class="card" style="padding:16px 20px;text-align:center;">
+                <div class="num" style="font-size:34px;color:#4caf8a;">+NT$5,900萬</div>
+                <div class="num-unit" style="margin-top:6px;">2026 新增毛利</div>
+                <div class="sm" style="margin-top:4px;">vs 2025 毛利 NT$5,530萬</div>
+              </div>
+              <div class="card" style="padding:16px 20px;text-align:center;">
+                <div class="num" style="font-size:34px;">~2.6年</div>
+                <div class="num-unit" style="margin-top:6px;">投資回收期</div>
+                <div class="sm" style="margin-top:4px;">數位化建設 ROI 估算</div>
+              </div>
+              <div class="card" style="padding:16px 20px;text-align:center;">
+                <div class="num" style="font-size:34px;color:var(--gold-lt);">107%</div>
+                <div class="num-unit" style="margin-top:6px;">2年累計 ROI</div>
+                <div class="sm" style="margin-top:4px;">含所有投入項目綜合計算</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== SLIDE 14: CLOSING ==================== -->
+    <div class="slide" id="s14">
+      <canvas class="bg" id="c14"></canvas>
+      <div class="pad z1" style="display:flex;flex-direction:column;justify-content:center;height:100%;align-items:center;text-align:center;">
+        <div class="y2-logo lg" style="margin:0 auto 28px;">Y2</div>
+        <div class="tag">2026 — 2027 STRATEGIC VISION</div>
+        <div class="h2" style="margin:12px 0;max-width:680px;line-height:1.2;">以數位驅動，以品質立信<br>打造桃園最值得信賴的汽車集團</div>
+        <div class="gold-line" style="width:320px;margin:24px auto;"></div>
+        <div style="display:flex;gap:40px;justify-content:center;margin-bottom:28px;">
+          <div>
+            <div class="num" style="font-size:32px;">NT$2.5億</div>
+            <div class="num-unit">2027 年銷售目標</div>
+          </div>
+          <div style="width:1px;background:rgba(201,151,58,0.3);"></div>
+          <div>
+            <div class="num" style="font-size:32px;color:#4caf8a;">48%</div>
+            <div class="num-unit">目標毛利率</div>
+          </div>
+          <div style="width:1px;background:rgba(201,151,58,0.3);"></div>
+          <div>
+            <div class="num" style="font-size:32px;">90+</div>
+            <div class="num-unit">活躍企業客戶</div>
+          </div>
+        </div>
+        <div class="body" style="font-size:13px;color:var(--dim);max-width:520px;line-height:1.8;">
+          亞鈺汽車集團 ｜ 桃園市八德區和平路 729 號<br>
+          T: 03-3750080 ｜ M: 0958-890-915<br>
+          本文件僅供內部策略討論使用，請妥善保管
+        </div>
+        <div style="margin-top:24px;" class="tag">Thank You · 謝謝</div>
+      </div>
+    </div>
+
+  </div><!-- /viewport -->
+</div><!-- /stage -->
+
+<!-- Click zones -->
+<div id="prev-zone"><div class="arrow-icon">‹</div></div>
+<div id="next-zone"><div class="arrow-icon">›</div></div>
+
+<!-- Bottom bar -->
+<div id="bottom-bar">
+  <div id="progress-track"><div id="progress-fill"></div></div>
+  <button class="nav-btn" id="btn-prev">◂</button>
+  <div id="slide-counter">1 / 14</div>
+  <button class="nav-btn" id="btn-next">▸</button>
+  <div id="nav-hint">← → 鍵盤導覽 · 點擊左右換頁</div>
+</div>
+
+<script>
+// ===== CURL NOISE CANVAS =====
+function initCanvas(id) {
+  const canvas = document.getElementById(id);
+  if (!canvas) return;
+  const slide = canvas.closest('.slide');
+  const W = 1280, H = 720;
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  function hash(n) {
+    let x = Math.sin(n) * 43758.5453123;
+    return x - Math.floor(x);
+  }
+  function smoothNoise(x, y, t) {
+    const ix = Math.floor(x), iy = Math.floor(y);
+    const fx = x - ix, fy = y - iy;
+    const ux = fx*fx*(3-2*fx), uy = fy*fy*(3-2*fy);
+    const a = hash(ix + iy*57 + t*13);
+    const b = hash(ix+1 + iy*57 + t*13);
+    const c = hash(ix + (iy+1)*57 + t*13);
+    const d = hash(ix+1 + (iy+1)*57 + t*13);
+    return a + (b-a)*ux + (c-a)*uy + (d-b+a-c)*ux*uy;
+  }
+  function curlAngle(x, y, t) {
+    const e = 0.01;
+    const n  = smoothNoise(x/120, y/120, t);
+    const nx = smoothNoise(x/120+e, y/120, t);
+    const ny = smoothNoise(x/120, y/120+e, t);
+    return Math.atan2((ny-n)/e, (nx-n)/e) * 2.4;
+  }
+
+  const N = 320, TRAIL = 22;
+  const particles = Array.from({length:N}, () => ({
+    x: Math.random()*W, y: Math.random()*H,
+    trail: [], age: 0, maxAge: 180+Math.random()*120
+  }));
+
+  let t = 0, raf = null, active = false;
+
+  function step() {
+    ctx.fillStyle = 'rgba(5,5,8,0.18)';
+    ctx.fillRect(0,0,W,H);
+    t += 0.0006;
+    for (const p of particles) {
+      const a = curlAngle(p.x, p.y, t);
+      p.x += Math.cos(a) * 0.7;
+      p.y += Math.sin(a) * 0.7;
+      p.age++;
+      p.trail.push({x:p.x, y:p.y});
+      if (p.trail.length > TRAIL) p.trail.shift();
+      if (p.age > p.maxAge || p.x<-20 || p.x>W+20 || p.y<-20 || p.y>H+20) {
+        p.x = Math.random()*W; p.y = Math.random()*H;
+        p.trail = []; p.age = 0; p.maxAge = 180+Math.random()*120;
+      }
+      if (p.trail.length < 2) continue;
+      ctx.beginPath();
+      ctx.moveTo(p.trail[0].x, p.trail[0].y);
+      for (let i=1; i<p.trail.length; i++) ctx.lineTo(p.trail[i].x, p.trail[i].y);
+      const alpha = Math.min(p.age/40, 1) * (1 - p.age/p.maxAge);
+      ctx.strokeStyle = `rgba(201,151,58,${alpha*0.35})`;
+      ctx.lineWidth = 0.8;
+      ctx.stroke();
+    }
+    if (active) raf = requestAnimationFrame(step);
+  }
+
+  function start() { if (!active) { active=true; raf=requestAnimationFrame(step); } }
+  function stop()  { active=false; if(raf) cancelAnimationFrame(raf); }
+
+  return { start, stop };
+}
+
+// ===== SLIDE NAVIGATION =====
+const TOTAL = 14;
+let current = 0;
+const slides = document.querySelectorAll('.slide');
+const counter = document.getElementById('slide-counter');
+const fill = document.getElementById('progress-fill');
+
+const canvases = {};
+for (let i=1; i<=TOTAL; i++) {
+  const ctrl = initCanvas('c'+i);
+  if (ctrl) canvases[i] = ctrl;
+}
+
+function goTo(n) {
+  const prev = current;
+  current = Math.max(0, Math.min(TOTAL-1, n));
+  slides.forEach((s,i) => s.classList.toggle('active', i===current));
+  counter.textContent = `${current+1} / ${TOTAL}`;
+  fill.style.width = `${((current+1)/TOTAL)*100}%`;
+  // Pause prev canvas, start current
+  if (canvases[prev+1]) canvases[prev+1].stop();
+  if (canvases[current+1]) canvases[current+1].start();
+}
+
+document.getElementById('btn-next').onclick = () => goTo(current+1);
+document.getElementById('btn-prev').onclick = () => goTo(current-1);
+document.getElementById('next-zone').onclick = () => goTo(current+1);
+document.getElementById('prev-zone').onclick = () => goTo(current-1);
+
+document.addEventListener('keydown', e => {
+  if (e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') { e.preventDefault(); goTo(current+1); }
+  if (e.key==='ArrowLeft'||e.key==='ArrowUp') { e.preventDefault(); goTo(current-1); }
+  if (e.key==='Home') goTo(0);
+  if (e.key==='End') goTo(TOTAL-1);
+});
+
+// ===== VIEWPORT SCALING =====
+function scaleViewport() {
+  const vp = document.getElementById('viewport');
+  const sw = window.innerWidth, sh = window.innerHeight - 36;
+  const scale = Math.min(sw/1280, sh/720);
+  vp.style.transform = `scale(${scale})`;
+  vp.style.marginLeft = `${(sw - 1280*scale)/2}px`;
+  vp.style.marginTop  = `${(sh - 720*scale)/2}px`;
+}
+window.addEventListener('resize', scaleViewport);
+scaleViewport();
+
+// ===== INIT =====
+goTo(0);
+</script>
+</body>
+</html>
