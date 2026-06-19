@@ -6,7 +6,6 @@
 <title>亞鈺汽車集團 — ERP 經營儀表板</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 <style>
-  /* ── Design Token: 黑底金字 亞鈺品牌 ── */
   :root {
     --black:     #0b0b0b;
     --black2:    #111111;
@@ -18,11 +17,6 @@
     --gold-dk:   #9a6e22;
     --gold-pale: #f5e6b8;
     --gold-glow: rgba(201,151,58,.18);
-    --white:     #ffffff;
-    --white80:   rgba(255,255,255,.80);
-    --white50:   rgba(255,255,255,.50);
-    --white20:   rgba(255,255,255,.20);
-    --white08:   rgba(255,255,255,.08);
     --border:    rgba(201,151,58,.25);
     --border-lt: rgba(201,151,58,.12);
     --text:      #f0e8d0;
@@ -30,359 +24,313 @@
     --green:     #4caf7a;
     --red:       #e05555;
     --blue:      #5b9bd5;
+    --amber:     #e8a030;
   }
-
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   body {
-    font-family: -apple-system, "Segoe UI", "PingFang TC", "Microsoft JhengHei", "Noto Serif TC", sans-serif;
-    background: var(--black);
-    color: var(--text);
-    font-size: 14px;
-    min-height: 100vh;
+    font-family: -apple-system,"Segoe UI","PingFang TC","Microsoft JhengHei",sans-serif;
+    background: var(--black); color: var(--text); font-size: 14px; min-height: 100vh;
   }
-
-  /* ── Gold Gradient ── */
   .gold-text {
-    background: linear-gradient(135deg, #f5e6b8 0%, #c9973a 40%, #f0d080 70%, #a06820 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    background: linear-gradient(135deg,#f5e6b8 0%,#c9973a 40%,#f0d080 70%,#a06820 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
   }
 
   /* ── Header ── */
   header {
-    background: linear-gradient(180deg, #0b0b0b 0%, #151208 100%);
+    background: linear-gradient(180deg,#0b0b0b 0%,#151208 100%);
     border-bottom: 1px solid var(--border);
-    padding: 0 36px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height: 72px;
-    position: sticky;
-    top: 0;
-    z-index: 100;
+    padding: 0 36px; display: flex; align-items: center; justify-content: space-between;
+    height: 72px; position: sticky; top: 0; z-index: 200;
     box-shadow: 0 2px 30px rgba(201,151,58,.12);
   }
-
-  .header-left {
-    display: flex;
-    align-items: center;
-    gap: 18px;
-  }
-
-  /* Logo circle — mimics card emblem */
+  .header-left { display: flex; align-items: center; gap: 18px; }
   .logo-ring {
-    width: 46px; height: 46px;
-    border-radius: 50%;
-    border: 2px solid var(--gold);
+    width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--gold);
     display: flex; align-items: center; justify-content: center;
-    background: radial-gradient(circle, #1f1800 0%, #0b0b0b 100%);
-    box-shadow: 0 0 14px rgba(201,151,58,.35), inset 0 0 8px rgba(201,151,58,.1);
-    flex-shrink: 0;
+    background: radial-gradient(circle,#1f1800 0%,#0b0b0b 100%);
+    box-shadow: 0 0 14px rgba(201,151,58,.35),inset 0 0 8px rgba(201,151,58,.1); flex-shrink: 0;
   }
   .logo-ring svg { width: 26px; height: 26px; }
-
-  .header-title h1 {
-    font-size: 18px;
-    font-weight: 800;
-    letter-spacing: 3px;
-    line-height: 1.2;
-  }
-  .header-title .sub {
-    font-size: 10px;
-    letter-spacing: 2px;
-    color: var(--text2);
-    margin-top: 2px;
-  }
-
-  .header-right {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-  .data-badge {
-    font-size: 11px;
-    letter-spacing: 1px;
-    color: var(--text2);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 5px 12px;
-  }
-  .live-dot {
-    display: flex; align-items: center; gap: 6px;
-    font-size: 11px; color: var(--gold-lt); letter-spacing: 1px;
-  }
-  .live-dot::before {
-    content: '';
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--gold);
-    box-shadow: 0 0 6px var(--gold);
-    animation: pulse 2s infinite;
-  }
-  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
-
-  /* ── Divider line ── */
-  .gold-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    margin: 0;
-  }
+  .header-title h1 { font-size: 18px; font-weight: 800; letter-spacing: 3px; line-height: 1.2; }
+  .header-title .sub { font-size: 10px; letter-spacing: 2px; color: var(--text2); margin-top: 2px; }
+  .header-right { display: flex; align-items: center; gap: 12px; }
+  .data-badge { font-size: 11px; letter-spacing: 1px; color: var(--text2); border: 1px solid var(--border); border-radius: 4px; padding: 5px 12px; }
+  .live-dot { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--gold-lt); letter-spacing: 1px; }
+  .live-dot::before { content:''; width:6px;height:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 6px var(--gold);animation:pulse 2s infinite; }
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+  .gold-line { height:1px; background:linear-gradient(90deg,transparent,var(--gold),transparent); }
 
   /* ── Nav ── */
-  nav {
-    background: var(--black2);
-    border-bottom: 1px solid var(--border-lt);
-    padding: 0 36px;
-    display: flex;
-    gap: 0;
-  }
+  nav { background:var(--black2); border-bottom:1px solid var(--border-lt); padding:0 36px; display:flex; }
   nav button {
-    padding: 16px 22px;
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text2);
-    letter-spacing: 1.5px;
-    border-bottom: 2px solid transparent;
-    transition: all .25s;
-    display: flex; align-items: center; gap: 8px;
+    padding:16px 22px; border:none; background:none; cursor:pointer;
+    font-size:13px; font-weight:600; color:var(--text2); letter-spacing:1.5px;
+    border-bottom:2px solid transparent; transition:all .25s; display:flex; align-items:center; gap:8px;
   }
-  nav button:hover { color: var(--gold-lt); }
-  nav button.active {
-    color: var(--gold-lt);
-    border-bottom-color: var(--gold);
-  }
-  nav button .icon { font-size: 15px; }
+  nav button:hover{color:var(--gold-lt);}
+  nav button.active{color:var(--gold-lt);border-bottom-color:var(--gold);}
+  nav button .icon{font-size:15px;}
 
   /* ── Main ── */
-  main { padding: 28px 36px 48px; }
-  .section { display: none; }
-  .section.active { display: block; }
+  main { padding:28px 36px 48px; }
+  .section{display:none;} .section.active{display:block;}
 
   /* ── Section heading ── */
-  .sec-head {
-    display: flex; align-items: center; gap: 14px;
-    margin-bottom: 24px;
-  }
-  .sec-head-line {
-    width: 3px; height: 28px; border-radius: 2px;
-    background: linear-gradient(180deg, var(--gold-lt), var(--gold-dk));
-  }
-  .sec-head h2 {
-    font-size: 20px; font-weight: 800; letter-spacing: 2px;
-    background: linear-gradient(135deg, #f5e6b8, #c9973a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .sec-head .sub { font-size: 12px; color: var(--text2); letter-spacing: 1px; margin-top: 2px; }
+  .sec-head { display:flex; align-items:center; gap:14px; margin-bottom:24px; }
+  .sec-head-line { width:3px; height:28px; border-radius:2px; background:linear-gradient(180deg,var(--gold-lt),var(--gold-dk)); }
+  .sec-head h2 { font-size:20px; font-weight:800; letter-spacing:2px; background:linear-gradient(135deg,#f5e6b8,#c9973a); -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text; }
+  .sec-head .sub{font-size:12px;color:var(--text2);letter-spacing:1px;margin-top:2px;}
 
-  /* ── KPI Cards ── */
-  .kpi-row { display: grid; gap: 16px; margin-bottom: 22px; }
-  .kpi-row.c4 { grid-template-columns: repeat(4, 1fr); }
-  .kpi-row.c3 { grid-template-columns: repeat(3, 1fr); }
-
+  /* ── KPI Card ── */
+  .kpi-row{display:grid;gap:16px;margin-bottom:22px;}
+  .kpi-row.c4{grid-template-columns:repeat(4,1fr);}
+  .kpi-row.c3{grid-template-columns:repeat(3,1fr);}
   .kpi {
-    background: var(--black3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 22px;
-    display: flex; align-items: center; gap: 16px;
-    position: relative;
-    overflow: hidden;
-    transition: border-color .2s, box-shadow .2s;
+    background:var(--black3); border:1px solid var(--border); border-radius:10px;
+    padding:18px 20px 14px; position:relative; overflow:hidden;
+    transition:border-color .2s,box-shadow .2s; display:flex; flex-direction:column; gap:12px;
   }
   .kpi::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, var(--gold-lt), transparent);
-    opacity: .6;
+    content:''; position:absolute; top:0;left:0;right:0;height:1px;
+    background:linear-gradient(90deg,transparent,var(--gold-lt),transparent); opacity:.6;
   }
-  .kpi:hover {
-    border-color: var(--gold);
-    box-shadow: 0 0 24px var(--gold-glow);
-  }
+  .kpi:hover{border-color:var(--gold);box-shadow:0 0 24px var(--gold-glow);}
+  .kpi-top{display:flex;align-items:center;gap:14px;}
   .kpi .icon-box {
-    width: 50px; height: 50px; border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 22px; flex-shrink: 0;
-    background: linear-gradient(135deg, var(--black4), var(--black5));
+    width:48px;height:48px;border-radius:8px;display:flex;align-items:center;justify-content:center;
+    font-size:21px;flex-shrink:0;background:linear-gradient(135deg,var(--black4),var(--black5));border:1px solid var(--border);
+  }
+  .kpi .info{flex:1;min-width:0;}
+  .kpi .info .label{font-size:11px;color:var(--text2);letter-spacing:1.5px;margin-bottom:4px;}
+  .kpi .info .value{font-size:22px;font-weight:800;line-height:1.1;background:linear-gradient(135deg,#f5e6b8,#c9973a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .kpi .info .sub2{font-size:11px;color:var(--text2);margin-top:3px;}
+
+  /* ── AI Insight Button ── */
+  .ai-btn {
+    display: flex; align-items: center; gap: 6px;
+    width: 100%; padding: 7px 12px; border-radius: 6px;
+    background: linear-gradient(135deg, rgba(201,151,58,.08), rgba(201,151,58,.15));
+    border: 1px solid rgba(201,151,58,.3);
+    color: var(--gold-lt); font-size: 11px; font-weight: 700;
+    letter-spacing: 1.5px; cursor: pointer; text-transform: uppercase;
+    transition: all .2s; justify-content: center;
+    font-family: inherit;
+  }
+  .ai-btn:hover {
+    background: linear-gradient(135deg, rgba(201,151,58,.18), rgba(201,151,58,.28));
+    border-color: var(--gold); box-shadow: 0 0 14px rgba(201,151,58,.2);
+  }
+  .ai-btn .ai-icon { font-size: 13px; animation: spin-slow 6s linear infinite; }
+  @keyframes spin-slow{0%{transform:rotate(0deg)}100%{transform:rotate(360deg)}}
+
+  /* ── Modal Overlay ── */
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; z-index: 1000;
+    background: rgba(0,0,0,.75); backdrop-filter: blur(6px);
+    align-items: center; justify-content: center; padding: 24px;
+  }
+  .modal-overlay.open { display: flex; }
+
+  /* ── Modal Panel ── */
+  .modal {
+    background: var(--black2);
     border: 1px solid var(--border);
+    border-radius: 14px;
+    max-width: 660px; width: 100%;
+    max-height: 86vh; overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 60px rgba(201,151,58,.18), 0 24px 60px rgba(0,0,0,.6);
+    animation: modal-in .25s ease;
   }
-  .kpi .info .label { font-size: 11px; color: var(--text2); letter-spacing: 1.5px; margin-bottom: 5px; }
-  .kpi .info .value {
-    font-size: 24px; font-weight: 800; line-height: 1.1;
-    background: linear-gradient(135deg, #f5e6b8, #c9973a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  @keyframes modal-in{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:none}}
+  .modal::before {
+    content:''; position:absolute;top:0;left:0;right:0;height:2px;border-radius:14px 14px 0 0;
+    background:linear-gradient(90deg,transparent,var(--gold),transparent);
   }
-  .kpi .info .sub2 { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  .modal-header {
+    padding: 22px 24px 16px;
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+    border-bottom: 1px solid var(--border-lt);
+  }
+  .modal-header-left { display: flex; align-items: center; gap: 12px; }
+  .modal-ai-badge {
+    display: flex; align-items: center; gap: 6px;
+    background: linear-gradient(135deg, rgba(201,151,58,.15), rgba(201,151,58,.08));
+    border: 1px solid var(--border); border-radius: 20px; padding: 5px 12px;
+    font-size: 11px; font-weight: 700; color: var(--gold-lt); letter-spacing: 1px; white-space: nowrap;
+  }
+  .modal-title { font-size: 17px; font-weight: 800; color: var(--gold-pale); letter-spacing: 1px; }
+  .modal-sub { font-size: 12px; color: var(--text2); margin-top: 3px; }
+  .modal-close {
+    width: 30px; height: 30px; border-radius: 50%; background: var(--black4);
+    border: 1px solid var(--border-lt); color: var(--text2); font-size: 16px;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0; transition: all .2s; line-height: 1;
+  }
+  .modal-close:hover{background:var(--black5);color:var(--gold-lt);border-color:var(--border);}
+
+  /* ── Modal body sections ── */
+  .modal-body { padding: 20px 24px 24px; display: flex; flex-direction: column; gap: 18px; }
+
+  .insight-block {
+    background: var(--black3); border: 1px solid var(--border-lt);
+    border-radius: 10px; overflow: hidden;
+  }
+  .insight-block-header {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border-lt);
+  }
+  .ib-icon {
+    width: 30px; height: 30px; border-radius: 6px;
+    display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0;
+  }
+  .ib-icon.analysis { background: rgba(229,80,80,.12); }
+  .ib-icon.source   { background: rgba(91,155,213,.12); }
+  .ib-icon.action   { background: rgba(76,175,122,.12); }
+  .ib-label {
+    font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  }
+  .ib-label.analysis { color: #e55050; }
+  .ib-label.source   { color: var(--blue); }
+  .ib-label.action   { color: var(--green); }
+
+  .insight-block-body { padding: 14px 16px; }
+  .insight-block-body p {
+    font-size: 13.5px; line-height: 1.75; color: var(--text); margin-bottom: 10px;
+  }
+  .insight-block-body p:last-child { margin-bottom: 0; }
+  .insight-block-body strong { color: var(--gold-lt); font-weight: 700; }
+  .insight-block-body em { color: #e55050; font-style: normal; font-weight: 600; }
+
+  /* action list */
+  .action-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+  .action-list li {
+    display: flex; align-items: flex-start; gap: 10px;
+    font-size: 13px; line-height: 1.6; color: var(--text);
+  }
+  .action-list li::before {
+    content: attr(data-n);
+    min-width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg,#c9973a,#9a6e22);
+    color: #0b0b0b; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px;
+  }
+
+  /* kpi level tag */
+  .kpi-level {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 2px 10px; border-radius: 4px; font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  }
+  .kpi-level.warn  { background:rgba(229,160,48,.12);color:var(--amber);border:1px solid rgba(229,160,48,.3); }
+  .kpi-level.risk  { background:rgba(229,80,80,.1);color:#e55050;border:1px solid rgba(229,80,80,.25); }
+  .kpi-level.good  { background:rgba(76,175,122,.1);color:var(--green);border:1px solid rgba(76,175,122,.25); }
+  .kpi-level.info  { background:rgba(91,155,213,.1);color:var(--blue);border:1px solid rgba(91,155,213,.25); }
+
+  .modal-meta { display:flex;align-items:center;gap:8px;margin-bottom:4px; }
 
   /* ── Chart Grid ── */
-  .chart-grid { display: grid; gap: 18px; margin-bottom: 18px; }
-  .chart-grid.c2 { grid-template-columns: 1fr 1fr; }
-  .chart-grid.c32 { grid-template-columns: 2fr 1fr; }
-  .chart-grid.c23 { grid-template-columns: 1fr 2fr; }
-
-  /* ── Card ── */
-  .card {
-    background: var(--black3);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 22px 24px;
-    position: relative;
-    overflow: hidden;
-  }
-  .card::before {
-    content: '';
-    position: absolute; top: 0; left: 0; right: 0; height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(201,151,58,.5), transparent);
-  }
-  .card-title {
-    font-size: 13px; font-weight: 700; letter-spacing: 2px;
-    color: var(--gold-lt);
-    margin-bottom: 18px;
-    display: flex; align-items: center; gap: 10px;
-    text-transform: uppercase;
-  }
-  .card-title .ct-icon { font-size: 15px; }
-
-  .chart-wrap { position: relative; }
-  .chart-wrap.h260 { height: 260px; }
-  .chart-wrap.h300 { height: 300px; }
-  .chart-wrap.h240 { height: 240px; }
-  .chart-wrap.h220 { height: 220px; }
+  .chart-grid{display:grid;gap:18px;margin-bottom:18px;}
+  .chart-grid.c2{grid-template-columns:1fr 1fr;}
+  .chart-grid.c32{grid-template-columns:2fr 1fr;}
+  .chart-grid.c23{grid-template-columns:1fr 2fr;}
+  .card{background:var(--black3);border:1px solid var(--border);border-radius:10px;padding:22px 24px;position:relative;overflow:hidden;}
+  .card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(201,151,58,.5),transparent);}
+  .card-title{font-size:13px;font-weight:700;letter-spacing:2px;color:var(--gold-lt);margin-bottom:18px;display:flex;align-items:center;gap:10px;text-transform:uppercase;}
+  .card-title .ct-icon{font-size:15px;}
+  .chart-wrap{position:relative;}
+  .chart-wrap.h260{height:260px;} .chart-wrap.h300{height:300px;} .chart-wrap.h240{height:240px;} .chart-wrap.h220{height:220px;}
 
   /* ── Table ── */
-  .dt { width: 100%; border-collapse: collapse; }
-  .dt th {
-    text-align: left; padding: 9px 12px;
-    font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
-    color: var(--gold);
-    border-bottom: 1px solid var(--border);
-    text-transform: uppercase;
-  }
-  .dt td {
-    padding: 11px 12px;
-    border-bottom: 1px solid var(--border-lt);
-    font-size: 13px;
-    color: var(--text);
-  }
-  .dt tr:last-child td { border-bottom: none; }
-  .dt tr:hover td { background: rgba(201,151,58,.04); }
-  .num { text-align: right; font-variant-numeric: tabular-nums; font-weight: 600; color: var(--gold-lt); }
-
-  /* Rank badge */
-  .rb {
-    display: inline-flex; align-items: center; justify-content: center;
-    width: 24px; height: 24px; border-radius: 50%;
-    font-size: 11px; font-weight: 700;
-  }
-  .rb.r1 { background: linear-gradient(135deg,#f5e6b8,#c9973a); color: #0b0b0b; }
-  .rb.r2 { background: var(--black5); color: var(--white50); border: 1px solid var(--border); }
-  .rb.r3 { background: var(--black5); color: #c47d3a; border: 1px solid rgba(196,125,58,.3); }
-  .rb.rn { background: var(--black4); color: var(--text2); }
-
-  /* Progress */
-  .prog { background: var(--black5); border-radius: 99px; height: 5px; margin-top: 6px; }
-  .prog-in { border-radius: 99px; height: 5px; background: linear-gradient(90deg, var(--gold-dk), var(--gold-lt)); }
-
-  /* ── Chip / Tag ── */
-  .chip {
-    display: inline-block; padding: 2px 9px; border-radius: 3px;
-    font-size: 11px; font-weight: 700; letter-spacing: 1px;
-    border: 1px solid;
-  }
-  .chip.成品   { color: #c9973a; border-color: rgba(201,151,58,.4); background: rgba(201,151,58,.08); }
-  .chip.半成品  { color: #5b9bd5; border-color: rgba(91,155,213,.35); background: rgba(91,155,213,.06); }
-  .chip.原料   { color: #4caf7a; border-color: rgba(76,175,122,.35); background: rgba(76,175,122,.06); }
-  .chip.物料   { color: #a67ab5; border-color: rgba(166,122,181,.35); background: rgba(166,122,181,.06); }
-  .chip.未分類  { color: var(--text2); border-color: var(--border-lt); background: transparent; }
-
-  /* ── Stat highlight blocks ── */
-  .stat-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
-  .stat-box {
-    background: var(--black4);
-    border: 1px solid var(--border-lt);
-    border-radius: 8px;
-    padding: 14px;
-    text-align: center;
-  }
-  .stat-box .sv {
-    font-size: 20px; font-weight: 800;
-    background: linear-gradient(135deg, #f5e6b8, #c9973a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  }
-  .stat-box .sl { font-size: 11px; color: var(--text2); margin-top: 4px; letter-spacing: 1px; }
-
-  /* ── Divider ── */
-  .divider { height: 1px; background: var(--border-lt); margin: 18px 0; }
-
-  /* ── Indicator cards in finance ── */
-  .ratio-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 16px; }
-  .ratio-box {
-    background: var(--black4);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-  }
-  .ratio-box::after {
-    content: '';
-    position: absolute; bottom: 0; left: 10%; right: 10%; height: 2px;
-    background: linear-gradient(90deg, transparent, var(--gold), transparent);
-  }
-  .ratio-box .rv {
-    font-size: 32px; font-weight: 800;
-    background: linear-gradient(135deg, #f5e6b8, #c9973a);
-    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    line-height: 1.1;
-  }
-  .ratio-box .rl { font-size: 11px; color: var(--text2); margin-top: 8px; letter-spacing: 1.5px; }
-
-  /* ── Inv legend ── */
-  #invLegend { display: flex; flex-direction: column; gap: 10px; }
-  .leg-item { display: flex; align-items: center; gap: 8px; font-size: 12px; }
-  .leg-dot { width: 10px; height: 10px; border-radius: 2px; flex-shrink: 0; }
-  .leg-name { flex: 1; color: var(--text); }
-  .leg-pct { color: var(--gold); font-weight: 700; }
+  .dt{width:100%;border-collapse:collapse;}
+  .dt th{text-align:left;padding:9px 12px;font-size:11px;font-weight:700;letter-spacing:1.5px;color:var(--gold);border-bottom:1px solid var(--border);text-transform:uppercase;}
+  .dt td{padding:11px 12px;border-bottom:1px solid var(--border-lt);font-size:13px;color:var(--text);}
+  .dt tr:last-child td{border-bottom:none;}
+  .dt tr:hover td{background:rgba(201,151,58,.04);}
+  .num{text-align:right;font-variant-numeric:tabular-nums;font-weight:600;color:var(--gold-lt);}
+  .rb{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:11px;font-weight:700;}
+  .rb.r1{background:linear-gradient(135deg,#f5e6b8,#c9973a);color:#0b0b0b;}
+  .rb.r2{background:var(--black5);color:rgba(255,255,255,.5);border:1px solid var(--border);}
+  .rb.r3{background:var(--black5);color:#c47d3a;border:1px solid rgba(196,125,58,.3);}
+  .rb.rn{background:var(--black4);color:var(--text2);}
+  .prog{background:var(--black5);border-radius:99px;height:5px;margin-top:6px;}
+  .prog-in{border-radius:99px;height:5px;background:linear-gradient(90deg,var(--gold-dk),var(--gold-lt));}
+  .chip{display:inline-block;padding:2px 9px;border-radius:3px;font-size:11px;font-weight:700;letter-spacing:1px;border:1px solid;}
+  .chip.成品{color:#c9973a;border-color:rgba(201,151,58,.4);background:rgba(201,151,58,.08);}
+  .chip.半成品{color:#5b9bd5;border-color:rgba(91,155,213,.35);background:rgba(91,155,213,.06);}
+  .chip.原料{color:#4caf7a;border-color:rgba(76,175,122,.35);background:rgba(76,175,122,.06);}
+  .chip.物料{color:#a67ab5;border-color:rgba(166,122,181,.35);background:rgba(166,122,181,.06);}
+  .chip.未分類{color:var(--text2);border-color:var(--border-lt);background:transparent;}
+  .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;}
+  .stat-box{background:var(--black4);border:1px solid var(--border-lt);border-radius:8px;padding:14px;text-align:center;}
+  .stat-box .sv{font-size:20px;font-weight:800;background:linear-gradient(135deg,#f5e6b8,#c9973a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .stat-box .sl{font-size:11px;color:var(--text2);margin-top:4px;letter-spacing:1px;}
+  .divider{height:1px;background:var(--border-lt);margin:18px 0;}
+  .ratio-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+  .ratio-box{background:var(--black4);border:1px solid var(--border);border-radius:10px;padding:18px;text-align:center;position:relative;overflow:hidden;}
+  .ratio-box::after{content:'';position:absolute;bottom:0;left:10%;right:10%;height:2px;background:linear-gradient(90deg,transparent,var(--gold),transparent);}
+  .ratio-box .rv{font-size:32px;font-weight:800;background:linear-gradient(135deg,#f5e6b8,#c9973a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1.1;}
+  .ratio-box .rl{font-size:11px;color:var(--text2);margin-top:8px;letter-spacing:1.5px;}
+  #invLegend{display:flex;flex-direction:column;gap:10px;}
+  .leg-item{display:flex;align-items:center;gap:8px;font-size:12px;}
+  .leg-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0;}
+  .leg-name{flex:1;color:var(--text);}
+  .leg-pct{color:var(--gold);font-weight:700;}
 
   /* ── Responsive ── */
-  @media (max-width: 1100px) {
-    .kpi-row.c4 { grid-template-columns: repeat(2,1fr); }
-    .chart-grid.c2,.chart-grid.c32,.chart-grid.c23 { grid-template-columns: 1fr; }
-    .ratio-grid { grid-template-columns: repeat(2,1fr); }
+  @media(max-width:1100px){
+    .kpi-row.c4{grid-template-columns:repeat(2,1fr);}
+    .chart-grid.c2,.chart-grid.c32,.chart-grid.c23{grid-template-columns:1fr;}
+    .ratio-grid{grid-template-columns:repeat(2,1fr);}
   }
-  @media (max-width: 640px) {
-    main { padding: 16px; }
-    nav, header { padding-left: 16px; padding-right: 16px; }
-    .kpi-row.c3,.kpi-row.c4 { grid-template-columns: 1fr; }
-    .ratio-grid { grid-template-columns: 1fr 1fr; }
+  @media(max-width:640px){
+    main{padding:16px;} nav,header{padding-left:16px;padding-right:16px;}
+    .kpi-row.c3,.kpi-row.c4{grid-template-columns:1fr;}
+    .ratio-grid{grid-template-columns:1fr 1fr;}
+    .modal{border-radius:10px;}
   }
+
+  /* scrollbar */
+  .modal::-webkit-scrollbar{width:5px;}
+  .modal::-webkit-scrollbar-track{background:var(--black3);}
+  .modal::-webkit-scrollbar-thumb{background:var(--gold-dk);border-radius:99px;}
 </style>
 </head>
 <body>
 
+<!-- ══ Modal ══ -->
+<div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-header-left">
+        <div class="modal-ai-badge">✦ AI INSIGHT</div>
+        <div>
+          <div class="modal-meta" id="modalMeta"></div>
+          <div class="modal-title" id="modalTitle"></div>
+          <div class="modal-sub" id="modalSub"></div>
+        </div>
+      </div>
+      <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
 <!-- ══ HEADER ══ -->
 <header>
   <div class="header-left">
-    <!-- Y2 Logo ring (SVG recreation of the circular emblem) -->
     <div class="logo-ring">
       <svg viewBox="0 0 26 26" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="13" cy="13" r="12" stroke="url(#gr)" stroke-width="1.2"/>
-        <text x="13" y="17" text-anchor="middle" font-size="9" font-weight="900"
-              font-family="Arial" fill="url(#gr2)" letter-spacing="0.5">Y2</text>
+        <text x="13" y="17" text-anchor="middle" font-size="9" font-weight="900" font-family="Arial" fill="url(#gr2)" letter-spacing="0.5">Y2</text>
         <defs>
           <linearGradient id="gr" x1="0" y1="0" x2="26" y2="26" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#f5e6b8"/>
-            <stop offset="50%" stop-color="#c9973a"/>
-            <stop offset="100%" stop-color="#9a6e22"/>
+            <stop offset="0%" stop-color="#f5e6b8"/><stop offset="50%" stop-color="#c9973a"/><stop offset="100%" stop-color="#9a6e22"/>
           </linearGradient>
           <linearGradient id="gr2" x1="0" y1="0" x2="26" y2="26" gradientUnits="userSpaceOnUse">
-            <stop offset="0%" stop-color="#f5e6b8"/>
-            <stop offset="100%" stop-color="#c9973a"/>
+            <stop offset="0%" stop-color="#f5e6b8"/><stop offset="100%" stop-color="#c9973a"/>
           </linearGradient>
         </defs>
       </svg>
@@ -401,175 +349,98 @@
 
 <!-- ══ NAV ══ -->
 <nav>
-  <button class="active" onclick="showTab('sales',this)">
-    <span class="icon">📈</span> 銷 售 狀 況
-  </button>
-  <button onclick="showTab('finance',this)">
-    <span class="icon">💰</span> 財 務 報 表
-  </button>
-  <button onclick="showTab('inventory',this)">
-    <span class="icon">📦</span> 庫 存 狀 況
-  </button>
+  <button class="active" onclick="showTab('sales',this)"><span class="icon">📈</span> 銷 售 狀 況</button>
+  <button onclick="showTab('finance',this)"><span class="icon">💰</span> 財 務 報 表</button>
+  <button onclick="showTab('inventory',this)"><span class="icon">📦</span> 庫 存 狀 況</button>
 </nav>
 
 <main>
 
 <!-- ══════════ TAB 1: 銷售 ══════════ -->
 <section id="tab-sales" class="section active">
-  <div class="sec-head">
-    <div class="sec-head-line"></div>
-    <div>
-      <h2>銷 售 狀 況</h2>
-      <div class="sub">SALES OVERVIEW</div>
-    </div>
-  </div>
+  <div class="sec-head"><div class="sec-head-line"></div><div><h2>銷 售 狀 況</h2><div class="sub">SALES OVERVIEW</div></div></div>
 
   <div class="kpi-row c4">
     <div class="kpi">
-      <div class="icon-box">💵</div>
-      <div class="info">
-        <div class="label">累計銷貨金額</div>
-        <div class="value">$1.89億</div>
-        <div class="sub2">2024-07 ～ 2026-06 本幣合計</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">💵</div><div class="info"><div class="label">累計銷貨金額</div><div class="value">$1.89億</div><div class="sub2">2024-07 ～ 2026-06 本幣合計</div></div></div>
+      <button class="ai-btn" onclick="openInsight('sales_total')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">📋</div>
-      <div class="info">
-        <div class="label">有效銷貨單數</div>
-        <div class="value">365張</div>
-        <div class="sub2">客戶訂單 386 張</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">📋</div><div class="info"><div class="label">有效銷貨單數</div><div class="value">365張</div><div class="sub2">客戶訂單 386 張</div></div></div>
+      <button class="ai-btn" onclick="openInsight('sales_orders')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">📅</div>
-      <div class="info">
-        <div class="label">本月銷貨 (2026-06)</div>
-        <div class="value">$1,820萬</div>
-        <div class="sub2 gold-text" style="font-size:11px;font-weight:700;">↑ 本年最高單月</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">📅</div><div class="info"><div class="label">本月銷貨 (2026-06)</div><div class="value">$1,820萬</div><div class="sub2">↑ 本年最高單月</div></div></div>
+      <button class="ai-btn" onclick="openInsight('sales_peak')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">🏆</div>
-      <div class="info">
-        <div class="label">最大客戶</div>
-        <div class="value" style="font-size:18px;">茂光電</div>
-        <div class="sub2">$2,062萬 ／ 佔比 10.9%</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">🏆</div><div class="info"><div class="label">最大客戶</div><div class="value" style="font-size:18px;">茂光電</div><div class="sub2">$2,062萬 ／ 佔比 10.9%</div></div></div>
+      <button class="ai-btn" onclick="openInsight('sales_customer')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
   </div>
 
   <div class="chart-grid c32">
     <div class="card">
       <div class="card-title"><span class="ct-icon">📊</span> 近 12 個月 銷貨 vs 採購</div>
-      <div class="chart-wrap h300">
-        <canvas id="chartSalesPurchase"></canvas>
-      </div>
+      <div class="chart-wrap h300"><canvas id="chartSalesPurchase"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ct-icon">📅</span> 季 度 表 現</div>
       <div class="stat-grid">
-        <div class="stat-box">
-          <div class="sv">$2,341萬</div>
-          <div class="sl">2026 Q1</div>
-        </div>
-        <div class="stat-box">
-          <div class="sv">$3,546萬</div>
-          <div class="sl">2026 Q2</div>
-        </div>
-        <div class="stat-box">
-          <div class="sv">$5,927萬</div>
-          <div class="sl">2025 H2</div>
-        </div>
-        <div class="stat-box">
-          <div class="sv">$4,274萬</div>
-          <div class="sl">2025 H1</div>
-        </div>
+        <div class="stat-box"><div class="sv">$2,341萬</div><div class="sl">2026 Q1</div></div>
+        <div class="stat-box"><div class="sv">$3,546萬</div><div class="sl">2026 Q2</div></div>
+        <div class="stat-box"><div class="sv">$5,927萬</div><div class="sl">2025 H2</div></div>
+        <div class="stat-box"><div class="sv">$4,274萬</div><div class="sl">2025 H1</div></div>
       </div>
       <div class="divider"></div>
       <div class="card-title" style="margin-bottom:12px;"><span class="ct-icon">📈</span> 月銷貨趨勢</div>
-      <div class="chart-wrap h220">
-        <canvas id="chartSalesMini"></canvas>
-      </div>
+      <div class="chart-wrap h220"><canvas id="chartSalesMini"></canvas></div>
     </div>
   </div>
 
   <div class="chart-grid c2">
     <div class="card">
       <div class="card-title"><span class="ct-icon">👥</span> 前 8 大 客 戶 銷 貨 金 額</div>
-      <div class="chart-wrap h260">
-        <canvas id="chartCustomers"></canvas>
-      </div>
+      <div class="chart-wrap h260"><canvas id="chartCustomers"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ct-icon">🏅</span> 客 戶 銷 售 排 行</div>
-      <table class="dt">
-        <thead>
-          <tr><th>排名</th><th>客 戶</th><th class="num">銷 貨 金 額</th><th style="min-width:100px;">佔 比</th></tr>
-        </thead>
-        <tbody id="customerTable"></tbody>
-      </table>
+      <table class="dt"><thead><tr><th>排名</th><th>客 戶</th><th class="num">銷 貨 金 額</th><th style="min-width:100px;">佔 比</th></tr></thead><tbody id="customerTable"></tbody></table>
     </div>
   </div>
 </section>
 
 <!-- ══════════ TAB 2: 財務 ══════════ -->
 <section id="tab-finance" class="section">
-  <div class="sec-head">
-    <div class="sec-head-line"></div>
-    <div>
-      <h2>財 務 報 表</h2>
-      <div class="sub">FINANCIAL OVERVIEW</div>
-    </div>
-  </div>
+  <div class="sec-head"><div class="sec-head-line"></div><div><h2>財 務 報 表</h2><div class="sub">FINANCIAL OVERVIEW</div></div></div>
 
   <div class="kpi-row c4">
     <div class="kpi">
-      <div class="icon-box">📊</div>
-      <div class="info">
-        <div class="label">累計銷貨收入</div>
-        <div class="value">$1.89億</div>
-        <div class="sub2">近兩年合計</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">📊</div><div class="info"><div class="label">累計銷貨收入</div><div class="value">$1.89億</div><div class="sub2">近兩年合計</div></div></div>
+      <button class="ai-btn" onclick="openInsight('fin_revenue')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">🛒</div>
-      <div class="info">
-        <div class="label">累計採購支出</div>
-        <div class="value">$1.03億</div>
-        <div class="sub2">442 張採購單</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">🛒</div><div class="info"><div class="label">累計採購支出</div><div class="value">$1.03億</div><div class="sub2">442 張採購單</div></div></div>
+      <button class="ai-btn" onclick="openInsight('fin_purchase')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">💳</div>
-      <div class="info">
-        <div class="label">應付帳款未付</div>
-        <div class="value">$2,655萬</div>
-        <div class="sub2">總計 $9,150萬 ／ 付清率 71%</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">💳</div><div class="info"><div class="label">應付帳款未付</div><div class="value">$2,655萬</div><div class="sub2">總計 $9,150萬 ／ 付清率 71%</div></div></div>
+      <button class="ai-btn" onclick="openInsight('fin_ap')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">📈</div>
-      <div class="info">
-        <div class="label">毛利率（估）</div>
-        <div class="value">45.7%</div>
-        <div class="sub2">銷貨 − 採購 ÷ 銷貨</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">📈</div><div class="info"><div class="label">毛利率（估）</div><div class="value">45.7%</div><div class="sub2">銷貨 − 採購 ÷ 銷貨</div></div></div>
+      <button class="ai-btn" onclick="openInsight('fin_margin')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
   </div>
 
   <div class="chart-grid c2">
     <div class="card">
       <div class="card-title"><span class="ct-icon">📉</span> 近 12 個 月 收 支 趨 勢</div>
-      <div class="chart-wrap h300">
-        <canvas id="chartFinanceTrend"></canvas>
-      </div>
+      <div class="chart-wrap h300"><canvas id="chartFinanceTrend"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ct-icon">💳</span> 應 付 帳 款 結 構</div>
-      <div class="chart-wrap h220">
-        <canvas id="chartAP"></canvas>
-      </div>
+      <div class="chart-wrap h220"><canvas id="chartAP"></canvas></div>
       <div class="divider"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
         <div class="stat-box"><div class="sv">$9,150萬</div><div class="sl">應付總額</div></div>
@@ -581,86 +452,45 @@
   <div class="chart-grid c2">
     <div class="card">
       <div class="card-title"><span class="ct-icon">🏭</span> 前 8 大 廠 商 採 購 金 額</div>
-      <div class="chart-wrap h260">
-        <canvas id="chartVendors"></canvas>
-      </div>
+      <div class="chart-wrap h260"><canvas id="chartVendors"></canvas></div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ct-icon">🏅</span> 廠 商 採 購 排 行</div>
-      <table class="dt">
-        <thead>
-          <tr><th>排名</th><th>廠 商</th><th class="num">採 購 金 額</th><th style="min-width:80px;">佔 比</th></tr>
-        </thead>
-        <tbody id="vendorTable"></tbody>
-      </table>
+      <table class="dt"><thead><tr><th>排名</th><th>廠 商</th><th class="num">採 購 金 額</th><th style="min-width:80px;">佔 比</th></tr></thead><tbody id="vendorTable"></tbody></table>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title"><span class="ct-icon">⚡</span> 財 務 關 鍵 指 標</div>
     <div class="ratio-grid">
-      <div class="ratio-box">
-        <div class="rv">45.7%</div>
-        <div class="rl">毛利率（估）</div>
-      </div>
-      <div class="ratio-box">
-        <div class="rv">54.3%</div>
-        <div class="rl">採購成本率</div>
-      </div>
-      <div class="ratio-box">
-        <div class="rv">71.0%</div>
-        <div class="rl">應付付清率</div>
-      </div>
-      <div class="ratio-box">
-        <div class="rv">7.9%</div>
-        <div class="rl">庫存 / 銷貨比</div>
-      </div>
+      <div class="ratio-box"><div class="rv">45.7%</div><div class="rl">毛利率（估）</div></div>
+      <div class="ratio-box"><div class="rv">54.3%</div><div class="rl">採購成本率</div></div>
+      <div class="ratio-box"><div class="rv">71.0%</div><div class="rl">應付付清率</div></div>
+      <div class="ratio-box"><div class="rv">7.9%</div><div class="rl">庫存 / 銷貨比</div></div>
     </div>
   </div>
 </section>
 
 <!-- ══════════ TAB 3: 庫存 ══════════ -->
 <section id="tab-inventory" class="section">
-  <div class="sec-head">
-    <div class="sec-head-line"></div>
-    <div>
-      <h2>庫 存 狀 況</h2>
-      <div class="sub">INVENTORY OVERVIEW</div>
-    </div>
-  </div>
+  <div class="sec-head"><div class="sec-head-line"></div><div><h2>庫 存 狀 況</h2><div class="sub">INVENTORY OVERVIEW</div></div></div>
 
   <div class="kpi-row c4">
     <div class="kpi">
-      <div class="icon-box">🏭</div>
-      <div class="info">
-        <div class="label">庫存總金額</div>
-        <div class="value">$1,487萬</div>
-        <div class="sub2">所有品項合計</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">🏭</div><div class="info"><div class="label">庫存總金額</div><div class="value">$1,487萬</div><div class="sub2">所有品項合計</div></div></div>
+      <button class="ai-btn" onclick="openInsight('inv_total')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">🔧</div>
-      <div class="info">
-        <div class="label">原料庫存</div>
-        <div class="value">$1,096萬</div>
-        <div class="sub2">268 品項 ／ 佔比 73.7%</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">🔧</div><div class="info"><div class="label">原料庫存</div><div class="value">$1,096萬</div><div class="sub2">268 品項 ／ 佔比 73.7%</div></div></div>
+      <button class="ai-btn" onclick="openInsight('inv_raw')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">🔩</div>
-      <div class="info">
-        <div class="label">半成品庫存</div>
-        <div class="value">$177萬</div>
-        <div class="sub2">57 品項</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">🔩</div><div class="info"><div class="label">半成品庫存</div><div class="value">$177萬</div><div class="sub2">57 品項</div></div></div>
+      <button class="ai-btn" onclick="openInsight('inv_wip')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
     <div class="kpi">
-      <div class="icon-box">✅</div>
-      <div class="info">
-        <div class="label">成品庫存</div>
-        <div class="value">$76.7萬</div>
-        <div class="sub2">17 品項</div>
-      </div>
+      <div class="kpi-top"><div class="icon-box">✅</div><div class="info"><div class="label">成品庫存</div><div class="value">$76.7萬</div><div class="sub2">17 品項</div></div></div>
+      <button class="ai-btn" onclick="openInsight('inv_fg')"><span class="ai-icon">✦</span> AI 洞見</button>
     </div>
   </div>
 
@@ -668,330 +498,326 @@
     <div class="card">
       <div class="card-title"><span class="ct-icon">🍩</span> 庫 存 金 額 分 佈</div>
       <div style="display:flex;align-items:center;gap:24px;">
-        <div class="chart-wrap" style="height:260px;flex:1;">
-          <canvas id="chartInvDonut"></canvas>
-        </div>
+        <div class="chart-wrap" style="height:260px;flex:1;"><canvas id="chartInvDonut"></canvas></div>
         <div id="invLegend" style="min-width:150px;"></div>
       </div>
     </div>
     <div class="card">
       <div class="card-title"><span class="ct-icon">📊</span> 各 類 別 庫 存 金 額 vs 品 項 數</div>
-      <div class="chart-wrap h260">
-        <canvas id="chartInvBar"></canvas>
-      </div>
+      <div class="chart-wrap h260"><canvas id="chartInvBar"></canvas></div>
     </div>
   </div>
 
   <div class="card">
     <div class="card-title"><span class="ct-icon">🔍</span> 前 10 大 庫 存 品 項（依 金 額）</div>
-    <table class="dt">
-      <thead>
-        <tr>
-          <th>排名</th><th>品 號</th><th>品 名</th><th>類 別</th>
-          <th class="num">數 量</th><th class="num">庫存金額</th><th style="min-width:100px;">佔 比</th>
-        </tr>
-      </thead>
-      <tbody id="invTable"></tbody>
-    </table>
+    <table class="dt"><thead><tr><th>排名</th><th>品 號</th><th>品 名</th><th>類 別</th><th class="num">數 量</th><th class="num">庫存金額</th><th style="min-width:100px;">佔 比</th></tr></thead><tbody id="invTable"></tbody></table>
   </div>
-
   <div class="card" style="margin-top:18px;">
     <div class="card-title"><span class="ct-icon">📋</span> 庫 存 類 別 彙 總</div>
-    <table class="dt">
-      <thead>
-        <tr><th>類 別</th><th class="num">品 項 數</th><th class="num">庫存數量</th><th class="num">庫存金額</th><th style="min-width:120px;">金額佔比</th></tr>
-      </thead>
-      <tbody id="catTable"></tbody>
-    </table>
+    <table class="dt"><thead><tr><th>類 別</th><th class="num">品 項 數</th><th class="num">庫存數量</th><th class="num">庫存金額</th><th style="min-width:120px;">金額佔比</th></tr></thead><tbody id="catTable"></tbody></table>
   </div>
 </section>
-
 </main>
 
 <script>
+// ─── Insight Data ─────────────────────────────────────
+const INSIGHTS = {
+  sales_total: {
+    title: '累計銷貨金額 $1.89億',
+    sub: '2024-07 ～ 2026-06 ｜ 成長軌跡分析',
+    level: 'good', levelText: '強勁成長',
+    analysis: `
+      <p>過去兩年整體銷售成績亮眼，但成長分佈<strong>極度不均</strong>。2024 下半年（$2,795萬）與 2025 下半年（$5,927萬）相比，年增率高達 <em>+112%</em>，呈倍速擴張。2026 上半年再創 $5,887萬，年增率 <strong>+37.7%</strong>，動能仍在持續。</p>
+      <p>然而，若單看月度資料，變異係數高達 <em>48.2%</em>，代表每個月業績落差極大，成長並非線性穩定，而是靠少數爆發月份帶動總數字。</p>`,
+    source: `
+      <p><strong>主要驅動力：</strong>2025 年下半年出現跳躍式成長，推測與特定大型訂單、新客戶開發或產品線擴張有關，需確認是否有結構性新訂單支撐，或只是一次性大單。</p>
+      <p><strong>隱憂：</strong>2026-02 僅 $276萬，連續兩年農曆年出現業績斷崖，顯示季節性因素嚴重影響現金流，且隨公司規模擴大，谷底金額的衝擊也越來越大。</p>`,
+    actions: ['確認 2025 H2 爆發性成長的訂單來源，評估是否可延續或複製成功模式', '將「穩定成長」列為 KPI，目標月銷貨變異係數降低至 30% 以內', '制定年度銷售預算時，以「過去兩年月均 $787萬」為保守基準，不以單月高峰規劃人力與庫存']
+  },
+
+  sales_orders: {
+    title: '有效銷貨單數 365張 / 訂單 386張',
+    sub: '訂單轉換與客戶下單行為分析',
+    level: 'warn', levelText: '需關注',
+    analysis: `
+      <p>兩年內共 <strong>386 張客戶訂單</strong>，月均約 16 張，密度不高。銷貨單 365 張對應訂單 386 張，<strong>轉換率約 94.6%</strong>，代表部分訂單尚未完成出貨或已取消。</p>
+      <p>與銷售金額對照，單均銷貨金額約 <strong>$51.7萬</strong>，屬中型訂單規模，顯示客戶下單頻率低但金額不小，業績對每一筆訂單的依賴度偏高。</p>`,
+    source: `
+      <p><strong>結構問題：</strong>訂單數量少意味著一旦有 2~3 張訂單延遲或取消，當月業績就可能腰斬。目前月業績最低只有 $276萬（2026-02），部分原因正是訂單數量不足。</p>
+      <p><strong>機會點：</strong>若能提高現有客戶的下單頻率（每季變每月），月度業績的穩定性將大幅提升，不需開發新客戶即可顯著增加收入。</p>`,
+    actions: ['對現有 42 位客戶推行「框架合約 + 月度補貨機制」，從單次大訂單轉為定期滾動下單', '建立訂單轉換率追蹤機制，鎖定 21 張尚未成為銷貨的訂單，追查滯留原因', '設定每月最低訂單目標（如 20 張以上），作為業務人員 KPI 考核基準']
+  },
+
+  sales_peak: {
+    title: '本月銷貨 $1,820萬（2026-06）',
+    sub: '歷史最高月份 ｜ 可持續性評估',
+    level: 'info', levelText: '觀察中',
+    analysis: `
+      <p>2026-06 創下整個資料期間最高單月銷貨 $1,820萬，比月均（$787萬）高出 <em>2.3 倍</em>，是名副其實的爆發月。然而，歷史告訴我們，高峰月份後往往緊跟著修正：2025-07 創當時高點後，2025-08 立即下滑 54%；2026-01 旺季後，2026-02 暴跌 77%。</p>
+      <p>如果 2026-06 的業績來自<strong>年中結案</strong>或<strong>季末衝刺</strong>，7 月很可能面臨急遽滑落，需提前做好心理與資金準備。</p>`,
+    source: `
+      <p><strong>潛在風險：</strong>單月爆量可能來自客戶緊急補貨、合約到期前結案，或業務衝刺季末業績的行為，而非真實需求的持續增長。</p>
+      <p><strong>警示信號：</strong>若 2026-07 銷貨低於 $1,000萬，需立即啟動客戶接觸計畫；若連續兩個月低於 $800萬，則代表成長趨勢已出現拐點。</p>`,
+    actions: ['立即盤點 2026-06 的訂單組成，確認是否有「提前認列」的訂單，避免重複計算', '對 7~9 月的訂單能見度進行排查，提前鎖定 $1,000萬以上的已確認訂單', '若 7 月出現 30% 以上下滑，立即啟動「夏季促銷或大客戶拜訪」計畫，避免業績斷層']
+  },
+
+  sales_customer: {
+    title: '最大客戶：茂光電（$2,062萬）',
+    sub: '客戶集中度風險 ｜ Top5 佔比 38%',
+    level: 'risk', levelText: '高風險',
+    analysis: `
+      <p>茂光電單一客戶佔總銷售額 <em>10.9%</em>，Top 3 客戶合計 <em>26.9%</em>，Top 5 合計 <em>38%</em>。公司目前僅有 <strong>42 位有效客戶</strong>，客戶基數過小，任何大客戶異動都將直接衝擊財報。</p>
+      <p>根據商業集中度標準，單一客戶佔比超過 <strong>10%</strong> 即為「重大依賴」，茂光電已觸碰此門檻。若茂光電因策略調整、競爭對手介入或自建供應鏈而減少訂單 50%，公司年收入將直接損失約 <em>$1,000萬</em>。</p>`,
+    source: `
+      <p><strong>形成原因：</strong>初期業績快速成長時，往往依賴少數大客戶驅動，而維護既有大客戶比開發新客戶成本低，導致業務資源過度集中在 Top 5。</p>
+      <p><strong>風險放大器：</strong>若茂光電與勤東工業同時出現訂單縮減，合計損失可達 $3,867萬，佔總銷售 20%，短期內難以從其他 40 位客戶彌補。</p>`,
+    actions: ['設定客戶集中度管控紅線：單一客戶不超過 8%，未來 12 個月內逐步達標', '主動開發新客戶，設定每季至少新增 3 家有效客戶為業務 KPI', '對茂光電與勤東工業建立「客戶健康度追蹤」，每月記錄訂單頻率與溝通狀況，提早偵測流失預警']
+  },
+
+  fin_revenue: {
+    title: '累計銷貨收入 $1.89億',
+    sub: '財務成長軌跡 ｜ 收入結構評估',
+    level: 'good', levelText: '穩健成長',
+    analysis: `
+      <p>兩年累計收入 $1.89億，成長動能強勁。從財務角度觀察，<strong>2026 年上半年已達 $5,887萬</strong>，年化推估 2026 全年有望突破 $1.1億，較 2025 全年（約 $1.02億）繼續成長約 <em>8%</em>。</p>
+      <p>然而，收入的月度分佈極不平均：最高月份（$1,820萬）是最低月份（$276萬）的 <em>6.6 倍</em>，代表財務規劃難度大，固定支出（人力、租金）在低谷月份可能造成現金壓力。</p>`,
+    source: `
+      <p><strong>收入品質問題：</strong>高度依賴少數大客戶與少數爆發月份，收入「量大但不穩」。若 2026 H2 出現回落，全年預算可能面臨修正。</p>
+      <p><strong>財務規劃建議：</strong>應區分「可預期收入」（框架合約、長期客戶定期訂單）與「機會收入」（單次大單、臨時需求），前者佔比越高，財務可見度越好。</p>`,
+    actions: ['建立「可預期收入比例」KPI，目標在 12 個月內將框架合約比例提升至月收入的 60% 以上', '制定「收入緩衝機制」：在高峰月份預留 20% 利潤作為低谷月份的現金準備金', '每季進行年度收入預測滾動更新，結合訂單能見度，避免財務計畫與實際落差過大']
+  },
+
+  fin_purchase: {
+    title: '累計採購支出 $1.03億',
+    sub: '採購成本管控 ｜ 2026 H1 年增 +30.8%',
+    level: 'warn', levelText: '需監控',
+    analysis: `
+      <p>兩年採購合計 $1.03億，採購成本率為 <strong>54.3%</strong>。2026 H1 採購支出 $2,844萬，比 2025 H1（$2,174萬）年增 <em>+30.8%</em>，成長速度快於同期銷售成長（+37.7%），兩者差距在縮小。</p>
+      <p>特別值得注意的是，<strong>2025-12 採購達 $631萬</strong>，是全期最高採購月份，但對應當月銷售只有 $968萬，採購/銷售比高達 65%，顯示存在採購提前備貨的情況。</p>`,
+    source: `
+      <p><strong>成本壓力來源：</strong>原物料價格上漲、供應鏈短缺導致超量採購備貨、廠商報價結構性提升，或為因應訂單成長而加大採購規模，但時機點與銷售節奏不匹配。</p>
+      <p><strong>隱患：</strong>若採購成長持續超過銷售成長，毛利率將從目前的 45.7% 開始侵蝕，6 個月內可能下滑至 40% 以下。</p>`,
+    actions: ['啟動「採購與銷售連動機制」：依據訂單能見度觸發採購，而非依據歷史習慣或廠商推薦量決定', '要求每月採購/銷售比不超過 60%，超標須主管審核', '對前 5 大廠商進行年度議價，目標在 H2 將採購成本率壓低至 52% 以下']
+  },
+
+  fin_ap: {
+    title: '應付帳款未付 $2,655萬',
+    sub: '付清率 71% ｜ 供應鏈信用風險評估',
+    level: 'risk', levelText: '需立即關注',
+    analysis: `
+      <p>應付帳款總額 $9,150萬，已付 $6,495萬（71%），仍有 <em>$2,655萬</em> 尚未結清。前 5 名未付廠商各欠款 $159~200萬，集中程度高。若廠商因帳期問題停止供貨，將直接衝擊生產排程。</p>
+      <p>未付款比率 29% 在製造業屬<strong>偏高水準</strong>（業界標準通常應低於 15%），暗示公司在付款管理上存在流程問題，或有意拉長帳期以調度現金，但此策略有潛在供應商關係風險。</p>`,
+    source: `
+      <p><strong>成因分析：</strong>業績高速成長帶動採購量大增，但應收帳款回收速度若跟不上採購支出，就會出現「已入庫已生產已出貨，但貨款尚未回收就需付廠商」的現金流缺口。</p>
+      <p><strong>供應鏈風險：</strong>目前前 5 大廠商各有 $160~200萬未付，若其中 2~3 家因帳期問題提出停供，生產線可能面臨斷料危機，影響客戶交期。</p>`,
+    actions: ['建立廠商帳款優先序：依「供貨不可替代性 × 未付金額」排序，每月優先結清高風險廠商', '設定應付帳款週轉天數目標（≤60 天），並每月追蹤', '與前 5 大廠商主動溝通付款計畫，維護合作關係，避免被列入「優先降低配合度」的客戶']
+  },
+
+  fin_margin: {
+    title: '毛利率（估）45.7%',
+    sub: '銷貨 − 採購 ÷ 銷貨 ｜ 趨勢與可持續性',
+    level: 'good', levelText: '健康水準',
+    analysis: `
+      <p>45.7% 的毛利率在製造業或汽車零配件領域屬於<strong>優良水準</strong>（業界一般為 25~40%）。這代表每 $100 銷售收入，扣除直接採購成本後仍保留 $45.7 的毛利，用於支付人事、租金、管銷費用後應仍有淨利空間。</p>
+      <p>但此估算僅以銷售減採購計算，<em>未納入直接人工、製造費用、退貨損失、運費等成本</em>，實際毛利率可能低於此數字，需對照完整損益表驗證。</p>`,
+    source: `
+      <p><strong>毛利壓縮風險：</strong>2026 H1 採購成長（+30.8%）略低於銷售成長（+37.7%），毛利率勉強維持。一旦採購成長超越銷售成長，或出現大批退貨，毛利率將快速下滑。</p>
+      <p><strong>結構性觀察：</strong>若未來需降價吸引客戶或原材料漲價，在沒有其他改善下，毛利率每下降 1 個百分點，等於損失約 $190萬的毛利額。</p>`,
+    actions: ['建立真實毛利率追蹤：將直接人工與製造費用納入計算，每月出具產品別毛利分析', '設定毛利率警戒線 40%，低於此值需立即啟動成本審查與定價策略評估', '針對毛利率最高的前 10 個品項，加強銷售推力；對毛利率低於 30% 的品項，評估是否調價或停售']
+  },
+
+  inv_total: {
+    title: '庫存總金額 $1,487萬',
+    sub: '週轉天數 106 天 ｜ 流動資金效率分析',
+    level: 'warn', levelText: '週轉偏慢',
+    analysis: `
+      <p>庫存週轉天數估算約 <strong>106 天</strong>，相當於採購後平均需要 3.5 個月才能消化成銷貨，業界製造業一般目標為 <em>60~90 天</em>。這代表有 $1,487萬的資金被鎖在庫存中，無法靈活運用。</p>
+      <p>特別值得注意的是，庫存結構嚴重偏向<strong>原料端（73.7%）</strong>，成品僅佔 5.2%，顯示原料進貨後在工廠或倉庫停留時間過長，生產消化速度跟不上採購速度。</p>`,
+    source: `
+      <p><strong>問題根源：</strong>採購超量備貨（可能為了享受量價折扣或防範缺料）、生產排程不連貫、訂單預測不準確導致備料過多，以及部分料件已超過最佳使用期限仍未處理。</p>
+      <p><strong>資金成本：</strong>$1,487萬庫存若以年化資金成本 4% 計算，每年額外承擔約 <em>$59萬的機會成本</em>，且未計入倉儲、保管、損耗等費用。</p>`,
+    actions: ['啟動庫存健康盤點：找出超過 180 天未動用的料件，分類為「呆料」並制定清除計畫', '目標在 6 個月內將庫存週轉天數降至 90 天以下，釋放約 $200~300萬的流動資金', '導入最低庫存量（Min）與最高庫存量（Max）管控機制，防止採購超量']
+  },
+
+  inv_raw: {
+    title: '原料庫存 $1,096萬（73.7%）',
+    sub: '268 品項 ｜ 原料積壓風險分析',
+    level: 'risk', levelText: '積壓嚴重',
+    analysis: `
+      <p>原料庫存 $1,096萬，佔總庫存 <em>73.7%</em>，且涵蓋多達 <strong>268 個品項</strong>，品項數量龐大，管理複雜度高。以最高價值前 10 大品項來看，每項原料庫存金額集中在 $12~20萬區間，顯示並非由少數昂貴料件主導，而是廣泛性的多品項積壓。</p>
+      <p>原料中包含晶片電阻、積層電容等電子元件，這類料件存在<strong>規格過時風險</strong>，若超過 12 個月未使用，可能因規格改版或廠商停產而形成呆料損失。</p>`,
+    source: `
+      <p><strong>積壓成因：</strong>以最低起訂量（MOQ）採購導致超量、多品項少量客製化需求造成長尾備料、缺乏有效的採購需求觸發機制，以及對廠商交期不確定的保護性囤貨。</p>
+      <p><strong>損失風險：</strong>若 10% 的原料（約 $110萬）最終成為無法使用的呆料，將直接損失 $110萬並衝擊當年損益。</p>`,
+    actions: ['針對 268 個原料品項進行 ABC 分類管理：A 類（高金額）每週盤點，B 類每月，C 類每季', '對超過 6 個月未領用的原料，立即評估是否可退還廠商或調整用途', '與前 3 大廠商洽談「寄售模式」：料件放置工廠但所有權不移轉，實際領用才計費，降低庫存壓力']
+  },
+
+  inv_wip: {
+    title: '半成品庫存 $177萬',
+    sub: '57 品項 ｜ 生產流轉效率評估',
+    level: 'warn', levelText: '需加速流轉',
+    analysis: `
+      <p>半成品（WIP）庫存 $177萬，涵蓋 <strong>57 個品項</strong>，平均每品項約 $3.1萬。WIP 是最難管理的庫存型態——它已消耗原料成本與人工，但尚未轉換為可出貨的成品，若因規格變更或訂單取消，損失風險最高。</p>
+      <p>WIP 金額佔總庫存 11.9%，雖比例不算極高，但 57 個半成品品項意味著<strong>生產線同時有多個品項在製</strong>，批量控制能力需要強化。</p>`,
+    source: `
+      <p><strong>問題根源：</strong>生產排程切換頻繁、批量太小導致換線損耗、訂單優先順序不清晰、或生產後段（組裝/測試/包裝）成為瓶頸，讓半成品堆積在製程中。</p>
+      <p><strong>資金風險：</strong>若有訂單被客戶取消，對應的半成品可能無法轉用於其他客戶，形成直接損失。</p>`,
+    actions: ['定期追蹤每個 WIP 品項的「在製天數」，超過 30 天未完工的品項需升級異常處理', '優化生產排程，增加批量大小，減少換線次數，讓相同品項一次生產到底', '要求業務在確認重大訂單變更前，必須先評估在製品損失，納入客戶變更通知的成本計算']
+  },
+
+  inv_fg: {
+    title: '成品庫存 $76.7萬（5.2%）',
+    sub: '17 品項 ｜ 成品結構與備貨策略',
+    level: 'info', levelText: '偏低，待評估',
+    analysis: `
+      <p>成品庫存僅 $76.7萬，佔總庫存 <em>5.2%</em>，僅 <strong>17 個成品品項</strong>。這個比例顯示公司傾向<strong>接單後製造（MTO）</strong>，成品不大量備貨，而是依訂單生產後直接出貨。</p>
+      <p>MTO 模式的好處是庫存風險低，但缺點是<strong>客戶急單交期長</strong>，若客戶有臨時插單需求，可能因成品不足無法即時回應，導致客戶流失。頭兩大成品品項 CABLE 白色組裝測試（$20萬）和 SMA CRIMP PLUG（$15萬）各約 250 個，需確認是否足以應對緊急出貨需求。</p>`,
+    source: `
+      <p><strong>策略取向：</strong>公司選擇以原料庫存（73.7%）替代成品庫存（5.2%），是典型的「原料囤貨、成品精簡」策略。此策略在市場需求穩定時合適，但在急單比例高的產業中，會造成交期競爭劣勢。</p>
+      <p><strong>業績影響：</strong>若 Top 5 客戶要求 3 天內交期，而現有成品只有 17 個品項，將有大量規格需要緊急生產，加班成本與生產失誤率都會上升。</p>`,
+    actions: ['分析近 12 個月的急單比例（交期少於 5 天的訂單），若超過 20%，需建立「快速成品緩衝庫存」', '針對出貨頻率最高的前 5 大成品品項，設立安全庫存量（建議各備 2~3 週用量）', '對客戶進行「預測下單」引導：提供提前下單優惠，換取更長的生產準備時間，減少急單壓力']
+  }
+};
+
 // ─── Data ────────────────────────────────
 const months = ["2025-07","2025-08","2025-09","2025-10","2025-11","2025-12","2026-01","2026-02","2026-03","2026-04","2026-05","2026-06"];
 const salesData = [13464777,6138108,5923975,10962010,13093592,9689284,12006962,2761108,8638473,9517050,7740195,18202181];
 const purchaseData = [4903502,3996492,3829690,4552873,5459457,6310223,3671536,4208682,4983479,5662959,6012502,3898038];
 const totalSales = 188834638, totalPurchase = 102583106, totalInv = 14870437;
 const apTotal = 91503691, apPaid = 64952213, apUnpaid = 26551478;
-
-const customers = [
-  ["茂光電",20617951],["勤東工業",18051001],["東弘自動化",12179902],
-  ["東友電機",11022586],["義弘能源",9917401],["台電子",9036250],
-  ["台瑞系統",8834825],["茂義實業",7580745]
-];
-const vendors = [
-  ["大貿易",4564628],["華材料",4544332],["凱工業",4520872],
-  ["華工業",4355445],["耀金屬",4101073],["勤貿易",4099501],
-  ["耀電子",4017200],["瑞零件",3776894]
-];
-const invCats = {
-  labels:["原料","半成品","成品","未分類","物料"],
-  amts:[10956860,1772109,767313,717049,657106],
-  qtys:[410053,9038,1741,23080,19853],
-  counts:[268,57,17,13,12]
-};
+const customers = [["茂光電",20617951],["勤東工業",18051001],["東弘自動化",12179902],["東友電機",11022586],["義弘能源",9917401],["台電子",9036250],["台瑞系統",8834825],["茂義實業",7580745]];
+const vendors = [["大貿易",4564628],["華材料",4544332],["凱工業",4520872],["華工業",4355445],["耀金屬",4101073],["勤貿易",4099501],["耀電子",4017200],["瑞零件",3776894]];
+const invCats = {labels:["原料","半成品","成品","未分類","物料"],amts:[10956860,1772109,767313,717049,657106],qtys:[410053,9038,1741,23080,19853],counts:[268,57,17,13,12]};
 const invItems = [
-  {item:"1-3-BEA-M04-002",   name:"CABLE 白色組裝測試",      qty:277,  amt:200176, cat:"成品"},
-  {item:"1-7-7811NS509BD000R",name:"SMA R/A CRIMP PLUG",     qty:253,  amt:150266, cat:"成品"},
-  {item:"3-1-24-015-170-1",  name:"散熱片 G-015槽 (170m/m)", qty:2747, amt:149244, cat:"未分類"},
-  {item:"3-2-11-809035-5A",  name:"晶片電阻",                qty:2909, amt:148620, cat:"原料"},
-  {item:"3-7-R11-014",       name:"9.5φ 圓銅條黃銅",         qty:2729, amt:143545, cat:"原料"},
-  {item:"3-1-20-18-0064",    name:"壓條 64m/m [300W用]",     qty:2781, amt:136853, cat:"未分類"},
-  {item:"3-2-12-4B0008-3Z",  name:"積層電容",                qty:2650, amt:135812, cat:"原料"},
-  {item:"3-2-11-809061-5A",  name:"晶片電阻",                qty:2593, amt:133098, cat:"原料"},
-  {item:"3-6-803-244S1-1001",name:"鋅盒公頭固定座 ASS'Y",    qty:2840, amt:124647, cat:"原料"},
-  {item:"3-2-12-450007-3Z",  name:"積層電容",                qty:2386, amt:124620, cat:"原料"}
+  {item:"1-3-BEA-M04-002",name:"CABLE 白色組裝測試",qty:277,amt:200176,cat:"成品"},
+  {item:"1-7-7811NS509BD000R",name:"SMA R/A CRIMP PLUG",qty:253,amt:150266,cat:"成品"},
+  {item:"3-1-24-015-170-1",name:"散熱片 G-015槽 (170m/m)",qty:2747,amt:149244,cat:"未分類"},
+  {item:"3-2-11-809035-5A",name:"晶片電阻",qty:2909,amt:148620,cat:"原料"},
+  {item:"3-7-R11-014",name:"9.5φ 圓銅條黃銅",qty:2729,amt:143545,cat:"原料"},
+  {item:"3-1-20-18-0064",name:"壓條 64m/m [300W用]",qty:2781,amt:136853,cat:"未分類"},
+  {item:"3-2-12-4B0008-3Z",name:"積層電容",qty:2650,amt:135812,cat:"原料"},
+  {item:"3-2-11-809061-5A",name:"晶片電阻",qty:2593,amt:133098,cat:"原料"},
+  {item:"3-6-803-244S1-1001",name:"鋅盒公頭固定座 ASS'Y",qty:2840,amt:124647,cat:"原料"},
+  {item:"3-2-12-450007-3Z",name:"積層電容",qty:2386,amt:124620,cat:"原料"}
 ];
-
-// ─── Gold palette ────────────────────────
-const GOLD  = ['#c9973a','#b07d2c','#d4a84b','#9a6e22','#e8c06a','#7a5218','#f0d080','#c08030'];
-const CHART_COLORS = {
-  gold1: '#c9973a', gold2: '#e8c06a', gold3: '#f0d080',
-  green: '#4caf7a', blue: '#5b9bd5', red: '#e05555', purple: '#a67ab5',
-  grid: 'rgba(201,151,58,.08)',
-  tick: 'rgba(201,151,58,.5)'
-};
 const INV_COLORS = ['#c9973a','#5b9bd5','#4caf7a','#888','#a67ab5'];
 
-// ─── Helpers ────────────────────────────
-const fmt  = n => n >= 1e8 ? '$'+(n/1e8).toFixed(2)+'億' : n >= 1e4 ? '$'+Math.round(n/1e4)+'萬' : '$'+n.toLocaleString();
-const fmtN = n => n.toLocaleString();
-const pct  = (a,b) => b ? (a/b*100).toFixed(1)+'%' : '0%';
-function rb(i) {
-  const cls = i===0?'r1':i===1?'r2':i===2?'r3':'rn';
-  return `<span class="rb ${cls}">${i+1}</span>`;
-}
+// ─── Modal Logic ─────────────────────────
+function openInsight(key) {
+  const d = INSIGHTS[key];
+  if (!d) return;
 
-// ─── Chart defaults ─────────────────────
+  const levelClass = {good:'good',warn:'warn',risk:'risk',info:'info'}[d.level];
+  const levelIcon  = {good:'✅',warn:'⚠️',risk:'🚨',info:'🔍'}[d.level];
+
+  document.getElementById('modalMeta').innerHTML =
+    `<span class="kpi-level ${levelClass}">${levelIcon} ${d.levelText}</span>`;
+  document.getElementById('modalTitle').textContent = d.title;
+  document.getElementById('modalSub').textContent = d.sub;
+
+  const actions = d.actions.map((a,i) =>
+    `<li data-n="${i+1}">${a}</li>`).join('');
+
+  document.getElementById('modalBody').innerHTML = `
+    <div class="insight-block">
+      <div class="insight-block-header">
+        <div class="ib-icon analysis">🔎</div>
+        <div class="ib-label analysis">問題分析</div>
+      </div>
+      <div class="insight-block-body">${d.analysis}</div>
+    </div>
+    <div class="insight-block">
+      <div class="insight-block-header">
+        <div class="ib-icon source">🧩</div>
+        <div class="ib-label source">問題來源</div>
+      </div>
+      <div class="insight-block-body">${d.source}</div>
+    </div>
+    <div class="insight-block">
+      <div class="insight-block-header">
+        <div class="ib-icon action">⚡</div>
+        <div class="ib-label action">建議對策</div>
+      </div>
+      <div class="insight-block-body">
+        <ul class="action-list">${actions}</ul>
+      </div>
+    </div>`;
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modalOverlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if(e.key==='Escape') closeModalDirect(); });
+
+// ─── Helpers ────────────────────────────
+const fmt  = n => n>=1e8?'$'+(n/1e8).toFixed(2)+'億':n>=1e4?'$'+Math.round(n/1e4)+'萬':'$'+n.toLocaleString();
+const fmtN = n => n.toLocaleString();
+const pct  = (a,b) => b?(a/b*100).toFixed(1)+'%':'0%';
+function rb(i){const c=i===0?'r1':i===1?'r2':i===2?'r3':'rn';return`<span class="rb ${c}">${i+1}</span>`;}
+
 Chart.defaults.font.family = '"PingFang TC","Microsoft JhengHei",sans-serif';
 Chart.defaults.font.size = 12;
 Chart.defaults.color = 'rgba(168,144,112,.85)';
 Chart.defaults.plugins.legend.labels.color = '#a89070';
 Chart.defaults.plugins.legend.labels.boxWidth = 10;
 Chart.defaults.plugins.legend.labels.padding = 16;
+const scaleOpts = {grid:{color:'rgba(201,151,58,.08)',borderColor:'transparent'},ticks:{color:'rgba(201,151,58,.5)'},border:{display:false}};
 
-const scaleOpts = {
-  grid: { color: CHART_COLORS.grid, borderColor: 'transparent' },
-  ticks: { color: CHART_COLORS.tick },
-  border: { display: false }
-};
-
-// ─── Tab switcher ────────────────────────
-function showTab(id, btn) {
-  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
-  document.getElementById('tab-' + id).classList.add('active');
+function showTab(id,btn){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
   btn.classList.add('active');
 }
 
-// ─── Build tables ────────────────────────
-function buildCustomerTable() {
-  const tb = document.getElementById('customerTable');
-  const mx = customers[0][1];
-  customers.forEach(([name,amt],i) => {
-    tb.innerHTML += `<tr>
-      <td>${rb(i)}</td><td>${name}</td>
-      <td class="num">${fmt(amt)}</td>
-      <td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(amt,totalSales)}</div>
-          <div class="prog"><div class="prog-in" style="width:${pct(amt,mx)};"></div></div></td>
-    </tr>`;
-  });
+// ─── Tables ─────────────────────────────
+function buildCustomerTable(){
+  const tb=document.getElementById('customerTable'),mx=customers[0][1];
+  customers.forEach(([n,a],i)=>{tb.innerHTML+=`<tr><td>${rb(i)}</td><td>${n}</td><td class="num">${fmt(a)}</td><td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(a,totalSales)}</div><div class="prog"><div class="prog-in" style="width:${pct(a,mx)};"></div></div></td></tr>`;});
 }
-function buildVendorTable() {
-  const tb = document.getElementById('vendorTable');
-  const mx = vendors[0][1];
-  vendors.forEach(([name,amt],i) => {
-    tb.innerHTML += `<tr>
-      <td>${rb(i)}</td><td>${name}</td>
-      <td class="num">${fmt(amt)}</td>
-      <td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(amt,totalPurchase)}</div>
-          <div class="prog"><div class="prog-in" style="width:${pct(amt,mx)};"></div></div></td>
-    </tr>`;
-  });
+function buildVendorTable(){
+  const tb=document.getElementById('vendorTable'),mx=vendors[0][1];
+  vendors.forEach(([n,a],i)=>{tb.innerHTML+=`<tr><td>${rb(i)}</td><td>${n}</td><td class="num">${fmt(a)}</td><td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(a,totalPurchase)}</div><div class="prog"><div class="prog-in" style="width:${pct(a,mx)};"></div></div></td></tr>`;});
 }
-function buildInvTable() {
-  const tb = document.getElementById('invTable');
-  invItems.forEach((r,i) => {
-    tb.innerHTML += `<tr>
-      <td>${rb(i)}</td>
-      <td style="font-size:11px;color:var(--text2);font-family:monospace;">${r.item}</td>
-      <td style="font-weight:600;">${r.name}</td>
-      <td><span class="chip ${r.cat}">${r.cat}</span></td>
-      <td class="num">${fmtN(r.qty)}</td>
-      <td class="num">$${fmtN(r.amt)}</td>
-      <td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(r.amt,totalInv)}</div>
-          <div class="prog"><div class="prog-in" style="width:${pct(r.amt,invItems[0].amt)};"></div></div></td>
-    </tr>`;
-  });
+function buildInvTable(){
+  const tb=document.getElementById('invTable');
+  invItems.forEach((r,i)=>{tb.innerHTML+=`<tr><td>${rb(i)}</td><td style="font-size:11px;color:var(--text2);font-family:monospace;">${r.item}</td><td style="font-weight:600;">${r.name}</td><td><span class="chip ${r.cat}">${r.cat}</span></td><td class="num">${fmtN(r.qty)}</td><td class="num">$${fmtN(r.amt)}</td><td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(r.amt,totalInv)}</div><div class="prog"><div class="prog-in" style="width:${pct(r.amt,invItems[0].amt)};"></div></div></td></tr>`;});
 }
-function buildCatTable() {
-  const tb = document.getElementById('catTable');
-  const tot = invCats.amts.reduce((a,b)=>a+b,0);
-  invCats.labels.forEach((cat,i) => {
-    tb.innerHTML += `<tr>
-      <td><span class="chip ${cat}">${cat}</span></td>
-      <td class="num">${invCats.counts[i]}</td>
-      <td class="num">${fmtN(invCats.qtys[i])}</td>
-      <td class="num">$${fmtN(invCats.amts[i])}</td>
-      <td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(invCats.amts[i],tot)}</div>
-          <div class="prog"><div class="prog-in" style="width:${pct(invCats.amts[i],invCats.amts[0])};background:${INV_COLORS[i]};"></div></div></td>
-    </tr>`;
-  });
+function buildCatTable(){
+  const tb=document.getElementById('catTable'),tot=invCats.amts.reduce((a,b)=>a+b,0);
+  invCats.labels.forEach((cat,i)=>{tb.innerHTML+=`<tr><td><span class="chip ${cat}">${cat}</span></td><td class="num">${invCats.counts[i]}</td><td class="num">${fmtN(invCats.qtys[i])}</td><td class="num">$${fmtN(invCats.amts[i])}</td><td><div style="font-size:11px;color:var(--text2);margin-bottom:3px;">${pct(invCats.amts[i],tot)}</div><div class="prog"><div class="prog-in" style="width:${pct(invCats.amts[i],invCats.amts[0])};background:${INV_COLORS[i]};"></div></div></td></tr>`;});
 }
-function buildInvLegend() {
-  const c = document.getElementById('invLegend');
-  const tot = invCats.amts.reduce((a,b)=>a+b,0);
-  invCats.labels.forEach((cat,i) => {
-    c.innerHTML += `<div class="leg-item">
-      <div class="leg-dot" style="background:${INV_COLORS[i]};"></div>
-      <span class="leg-name">${cat}</span>
-      <span class="leg-pct">${pct(invCats.amts[i],tot)}</span>
-    </div>`;
-  });
+function buildInvLegend(){
+  const c=document.getElementById('invLegend'),tot=invCats.amts.reduce((a,b)=>a+b,0);
+  invCats.labels.forEach((cat,i)=>{c.innerHTML+=`<div class="leg-item"><div class="leg-dot" style="background:${INV_COLORS[i]};"></div><span class="leg-name">${cat}</span><span class="leg-pct">${pct(invCats.amts[i],tot)}</span></div>`;});
 }
 
 // ─── Charts ─────────────────────────────
-function initCharts() {
-  // 1. Sales vs Purchase bar
-  new Chart(document.getElementById('chartSalesPurchase'), {
-    data: {
-      labels: months,
-      datasets: [
-        { type:'bar', label:'銷貨金額', data: salesData,
-          backgroundColor:'rgba(201,151,58,.7)', borderRadius:5, order:2 },
-        { type:'bar', label:'採購金額', data: purchaseData,
-          backgroundColor:'rgba(91,155,213,.45)', borderRadius:5, order:2 },
-        { type:'line', label:'銷貨趨勢', data: salesData,
-          borderColor:'#e8c06a', borderWidth:2.5, tension:0.4,
-          pointRadius:3, pointBackgroundColor:'#0b0b0b', pointBorderColor:'#e8c06a',
-          fill:false, order:1 }
-      ]
-    },
-    options: {
-      responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top'}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${(c.raw/1e4).toFixed(0)}萬`}} },
-      scales:{ x:{...scaleOpts, ticks:{...scaleOpts.ticks, maxRotation:45}}, y:{...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}} }
-    }
-  });
+function initCharts(){
+  new Chart(document.getElementById('chartSalesPurchase'),{data:{labels:months,datasets:[{type:'bar',label:'銷貨金額',data:salesData,backgroundColor:'rgba(201,151,58,.7)',borderRadius:5,order:2},{type:'bar',label:'採購金額',data:purchaseData,backgroundColor:'rgba(91,155,213,.45)',borderRadius:5,order:2},{type:'line',label:'銷貨趨勢',data:salesData,borderColor:'#e8c06a',borderWidth:2.5,tension:0.4,pointRadius:3,pointBackgroundColor:'#0b0b0b',pointBorderColor:'#e8c06a',fill:false,order:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${(c.raw/1e4).toFixed(0)}萬`}}},scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,maxRotation:45}},y:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}}}}});
 
-  // 2. Mini sales sparkline
-  new Chart(document.getElementById('chartSalesMini'), {
-    type:'line',
-    data:{ labels:months, datasets:[{
-      data:salesData, borderColor:'#c9973a',
-      backgroundColor:'rgba(201,151,58,.08)', fill:true,
-      borderWidth:2, tension:0.4, pointRadius:2,
-      pointBackgroundColor:'#0b0b0b', pointBorderColor:'#c9973a'
-    }]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}, tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}}},
-      scales:{ x:{...scaleOpts, ticks:{...scaleOpts.ticks, maxRotation:45}},
-               y:{...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}} } }
-  });
+  new Chart(document.getElementById('chartSalesMini'),{type:'line',data:{labels:months,datasets:[{data:salesData,borderColor:'#c9973a',backgroundColor:'rgba(201,151,58,.08)',fill:true,borderWidth:2,tension:0.4,pointRadius:2,pointBackgroundColor:'#0b0b0b',pointBorderColor:'#c9973a'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}}},scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,maxRotation:45}},y:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}}}}});
 
-  // 3. Customers horizontal bar
-  new Chart(document.getElementById('chartCustomers'), {
-    type:'bar',
-    data:{ labels:customers.map(c=>c[0]), datasets:[{
-      label:'銷貨金額', data:customers.map(c=>c[1]),
-      backgroundColor: customers.map((_,i) => i===0 ? 'rgba(201,151,58,.85)' : 'rgba(201,151,58,.45)'),
-      borderLeft: customers.map((_,i) => i===0?3:0),
-      borderColor:'#c9973a', borderRadius:4
-    }]},
-    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}} },
-      scales:{ x:{...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}},
-               y:{...scaleOpts} } }
-  });
+  new Chart(document.getElementById('chartCustomers'),{type:'bar',data:{labels:customers.map(c=>c[0]),datasets:[{label:'銷貨金額',data:customers.map(c=>c[1]),backgroundColor:customers.map((_,i)=>i===0?'rgba(201,151,58,.85)':'rgba(201,151,58,.45)'),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}}},scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}},y:{...scaleOpts}}}});
 
-  // 4. Finance trend
-  new Chart(document.getElementById('chartFinanceTrend'), {
-    type:'line',
-    data:{ labels:months, datasets:[
-      { label:'銷貨收入', data:salesData, borderColor:'#c9973a',
-        backgroundColor:'rgba(201,151,58,.1)', fill:true, borderWidth:2.5,
-        tension:0.4, pointRadius:4, pointBackgroundColor:'#0b0b0b', pointBorderColor:'#c9973a' },
-      { label:'採購支出', data:purchaseData, borderColor:'#5b9bd5',
-        backgroundColor:'rgba(91,155,213,.06)', fill:true, borderWidth:2,
-        tension:0.4, pointRadius:3, pointBackgroundColor:'#0b0b0b', pointBorderColor:'#5b9bd5' }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top'}, tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${(c.raw/1e4).toFixed(0)}萬`}} },
-      scales:{ x:{...scaleOpts, ticks:{...scaleOpts.ticks, maxRotation:45}},
-               y:{...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}} } }
-  });
+  new Chart(document.getElementById('chartFinanceTrend'),{type:'line',data:{labels:months,datasets:[{label:'銷貨收入',data:salesData,borderColor:'#c9973a',backgroundColor:'rgba(201,151,58,.1)',fill:true,borderWidth:2.5,tension:0.4,pointRadius:4,pointBackgroundColor:'#0b0b0b',pointBorderColor:'#c9973a'},{label:'採購支出',data:purchaseData,borderColor:'#5b9bd5',backgroundColor:'rgba(91,155,213,.06)',fill:true,borderWidth:2,tension:0.4,pointRadius:3,pointBackgroundColor:'#0b0b0b',pointBorderColor:'#5b9bd5'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>` ${c.dataset.label}: $${(c.raw/1e4).toFixed(0)}萬`}}},scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,maxRotation:45}},y:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}}}}});
 
-  // 5. AP donut
-  new Chart(document.getElementById('chartAP'), {
-    type:'doughnut',
-    data:{ labels:['已付款','未付款'], datasets:[{
-      data:[apPaid, apUnpaid],
-      backgroundColor:['rgba(76,175,122,.8)','rgba(201,151,58,.6)'],
-      borderColor:['#4caf7a','#c9973a'], borderWidth:2, hoverOffset:6
-    }]},
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'68%',
-      plugins:{ legend:{position:'bottom'},
-        tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬 (${(c.raw/apTotal*100).toFixed(1)}%)`}} } }
-  });
+  new Chart(document.getElementById('chartAP'),{type:'doughnut',data:{labels:['已付款','未付款'],datasets:[{data:[apPaid,apUnpaid],backgroundColor:['rgba(76,175,122,.8)','rgba(201,151,58,.6)'],borderColor:['#4caf7a','#c9973a'],borderWidth:2,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,cutout:'68%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬 (${(c.raw/apTotal*100).toFixed(1)}%)`}}}}});
 
-  // 6. Vendors bar
-  new Chart(document.getElementById('chartVendors'), {
-    type:'bar',
-    data:{ labels:vendors.map(v=>v[0]), datasets:[{
-      label:'採購金額', data:vendors.map(v=>v[1]),
-      backgroundColor: vendors.map((_,i) => i===0?'rgba(91,155,213,.8)':'rgba(91,155,213,.4)'),
-      borderColor:'#5b9bd5', borderRadius:4
-    }]},
-    options:{ indexAxis:'y', responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{display:false}, tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}} },
-      scales:{ x:{...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}},
-               y:{...scaleOpts} } }
-  });
+  new Chart(document.getElementById('chartVendors'),{type:'bar',data:{labels:vendors.map(v=>v[0]),datasets:[{label:'採購金額',data:vendors.map(v=>v[1]),backgroundColor:vendors.map((_,i)=>i===0?'rgba(91,155,213,.8)':'rgba(91,155,213,.4)'),borderRadius:4}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` $${(c.raw/1e4).toFixed(0)}萬`}}},scales:{x:{...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}},y:{...scaleOpts}}}});
 
-  // 7. Inv donut
-  new Chart(document.getElementById('chartInvDonut'), {
-    type:'doughnut',
-    data:{ labels:invCats.labels, datasets:[{
-      data:invCats.amts,
-      backgroundColor: INV_COLORS.map(c => c + 'bb'),
-      borderColor: INV_COLORS, borderWidth:2, hoverOffset:8
-    }]},
-    options:{ responsive:true, maintainAspectRatio:false, cutout:'62%',
-      plugins:{ legend:{display:false},
-        tooltip:{callbacks:{label:c=>` ${c.label}: $${(c.raw/1e4).toFixed(0)}萬 (${(c.raw/totalInv*100).toFixed(1)}%)`}} } }
-  });
+  new Chart(document.getElementById('chartInvDonut'),{type:'doughnut',data:{labels:invCats.labels,datasets:[{data:invCats.amts,backgroundColor:INV_COLORS.map(c=>c+'bb'),borderColor:INV_COLORS,borderWidth:2,hoverOffset:8}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>` ${c.label}: $${(c.raw/1e4).toFixed(0)}萬 (${(c.raw/totalInv*100).toFixed(1)}%)`}}}}});
 
-  // 8. Inv bar
-  new Chart(document.getElementById('chartInvBar'), {
-    type:'bar',
-    data:{ labels:invCats.labels, datasets:[
-      { label:'庫存金額', data:invCats.amts,
-        backgroundColor: INV_COLORS.map(c=>c+'99'), borderColor:INV_COLORS,
-        borderWidth:1.5, borderRadius:6, yAxisID:'yA' },
-      { type:'line', label:'品項數', data:invCats.counts,
-        borderColor:'rgba(201,151,58,.6)', borderWidth:2, pointRadius:5,
-        pointBackgroundColor:'#0b0b0b', pointBorderColor:'#c9973a', tension:0.4, yAxisID:'yC' }
-    ]},
-    options:{ responsive:true, maintainAspectRatio:false,
-      plugins:{ legend:{position:'top'},
-        tooltip:{callbacks:{label:c => c.dataset.yAxisID==='yA' ? ` 金額: $${(c.raw/1e4).toFixed(0)}萬` : ` 品項: ${c.raw} 個`}} },
-      scales:{
-        x:{...scaleOpts},
-        yA:{ position:'left', ...scaleOpts, ticks:{...scaleOpts.ticks, callback:v=>'$'+(v/1e4).toFixed(0)+'萬'} },
-        yC:{ position:'right', grid:{display:false}, border:{display:false}, ticks:{color:CHART_COLORS.tick, callback:v=>v+'項'} }
-      } }
-  });
+  new Chart(document.getElementById('chartInvBar'),{type:'bar',data:{labels:invCats.labels,datasets:[{label:'庫存金額',data:invCats.amts,backgroundColor:INV_COLORS.map(c=>c+'99'),borderColor:INV_COLORS,borderWidth:1.5,borderRadius:6,yAxisID:'yA'},{type:'line',label:'品項數',data:invCats.counts,borderColor:'rgba(201,151,58,.6)',borderWidth:2,pointRadius:5,pointBackgroundColor:'#0b0b0b',pointBorderColor:'#c9973a',tension:0.4,yAxisID:'yC'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top'},tooltip:{callbacks:{label:c=>c.dataset.yAxisID==='yA'?` 金額: $${(c.raw/1e4).toFixed(0)}萬`:` 品項: ${c.raw} 個`}}},scales:{x:{...scaleOpts},yA:{position:'left',...scaleOpts,ticks:{...scaleOpts.ticks,callback:v=>'$'+(v/1e4).toFixed(0)+'萬'}},yC:{position:'right',grid:{display:false},border:{display:false},ticks:{color:'rgba(201,151,58,.5)',callback:v=>v+'項'}}}}});
 }
 
-// ─── Init ───────────────────────────────
-buildCustomerTable();
-buildVendorTable();
-buildInvTable();
-buildCatTable();
-buildInvLegend();
-initCharts();
+buildCustomerTable(); buildVendorTable(); buildInvTable(); buildCatTable(); buildInvLegend(); initCharts();
 </script>
 </body>
 </html>
